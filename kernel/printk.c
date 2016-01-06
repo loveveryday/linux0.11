@@ -11,42 +11,42 @@
 * all is well.
 */
 /*
-* µ±´¦ÓÚÄÚºËÄ£Ê½Ê±£¬ÎÒÃÇ²»ÄÜÊ¹ÓÃprintf£¬ÒòÎª¼Ä´æÆ÷fs Ö¸ÏòÆäËü²»¸ĞĞËÈ¤µÄµØ·½¡£
-* ×Ô¼º±àÖÆÒ»¸öprintf ²¢ÔÚÊ¹ÓÃÇ°±£´æfs£¬Ò»ÇĞ¾Í½â¾öÁË¡£
+* å½“å¤„äºå†…æ ¸æ¨¡å¼æ—¶ï¼Œæˆ‘ä»¬ä¸èƒ½ä½¿ç”¨printfï¼Œå› ä¸ºå¯„å­˜å™¨fs æŒ‡å‘å…¶å®ƒä¸æ„Ÿå…´è¶£çš„åœ°æ–¹ã€‚
+* è‡ªå·±ç¼–åˆ¶ä¸€ä¸ªprintf å¹¶åœ¨ä½¿ç”¨å‰ä¿å­˜fsï¼Œä¸€åˆ‡å°±è§£å†³äº†ã€‚
 */
-#include <stdarg.h>		// ±ê×¼²ÎÊıÍ·ÎÄ¼ş¡£ÒÔºêµÄĞÎÊ½¶¨Òå±äÁ¿²ÎÊıÁĞ±í¡£Ö÷ÒªËµÃ÷ÁË-¸ö
-// ÀàĞÍ(va_list)ºÍÈı¸öºê(va_start, va_arg ºÍva_end)£¬ÓÃÓÚ
-// vsprintf¡¢vprintf¡¢vfprintf º¯Êı¡£
-#include <stddef.h>		// ±ê×¼¶¨ÒåÍ·ÎÄ¼ş¡£¶¨ÒåÁËNULL, offsetof(TYPE, MEMBER)¡£
+#include <stdarg.h>		// æ ‡å‡†å‚æ•°å¤´æ–‡ä»¶ã€‚ä»¥å®çš„å½¢å¼å®šä¹‰å˜é‡å‚æ•°åˆ—è¡¨ã€‚ä¸»è¦è¯´æ˜äº†-ä¸ª
+// ç±»å‹(va_list)å’Œä¸‰ä¸ªå®(va_start, va_arg å’Œva_end)ï¼Œç”¨äº
+// vsprintfã€vprintfã€vfprintf å‡½æ•°ã€‚
+#include <stddef.h>		// æ ‡å‡†å®šä¹‰å¤´æ–‡ä»¶ã€‚å®šä¹‰äº†NULL, offsetof(TYPE, MEMBER)ã€‚
 
-#include <linux/kernel.h>	// ÄÚºËÍ·ÎÄ¼ş¡£º¬ÓĞÒ»Ğ©ÄÚºË³£ÓÃº¯ÊıµÄÔ­ĞÎ¶¨Òå¡£
+#include <linux/kernel.h>	// å†…æ ¸å¤´æ–‡ä»¶ã€‚å«æœ‰ä¸€äº›å†…æ ¸å¸¸ç”¨å‡½æ•°çš„åŸå½¢å®šä¹‰ã€‚
 
 static char buf[1024];
 
-// ÏÂÃæ¸Ãº¯Êıvsprintf()ÔÚlinux/kernel/vsprintf.c ÖĞ92 ĞĞ¿ªÊ¼¡£
+// ä¸‹é¢è¯¥å‡½æ•°vsprintf()åœ¨linux/kernel/vsprintf.c ä¸­92 è¡Œå¼€å§‹ã€‚
 extern int vsprintf (char *buf, const char *fmt, va_list args);
 
-// ÄÚºËÊ¹ÓÃµÄÏÔÊ¾º¯Êı¡£
+// å†…æ ¸ä½¿ç”¨çš„æ˜¾ç¤ºå‡½æ•°ã€‚
 int printk (const char *fmt, ...)
 {
-	va_list args;			// va_list Êµ¼ÊÉÏÊÇÒ»¸ö×Ö·ûÖ¸ÕëÀàĞÍ¡£
+	va_list args;			// va_list å®é™…ä¸Šæ˜¯ä¸€ä¸ªå­—ç¬¦æŒ‡é’ˆç±»å‹ã€‚
 	int i;
 
-	va_start (args, fmt);		// ²ÎÊı´¦Àí¿ªÊ¼º¯Êı¡£ÔÚ£¨include/stdarg.h,13£©
-	i = vsprintf (buf, fmt, args);	// Ê¹ÓÃ¸ñÊ½´®fmt ½«²ÎÊıÁĞ±íargs Êä³öµ½buf ÖĞ¡£
-// ·µ»ØÖµi µÈÓÚÊä³ö×Ö·û´®µÄ³¤¶È¡£
-	va_end (args);		// ²ÎÊı´¦Àí½áÊøº¯Êı¡£
+	va_start (args, fmt);		// å‚æ•°å¤„ç†å¼€å§‹å‡½æ•°ã€‚åœ¨ï¼ˆinclude/stdarg.h,13ï¼‰
+	i = vsprintf (buf, fmt, args);	// ä½¿ç”¨æ ¼å¼ä¸²fmt å°†å‚æ•°åˆ—è¡¨args è¾“å‡ºåˆ°buf ä¸­ã€‚
+// è¿”å›å€¼i ç­‰äºè¾“å‡ºå­—ç¬¦ä¸²çš„é•¿åº¦ã€‚
+	va_end (args);		// å‚æ•°å¤„ç†ç»“æŸå‡½æ•°ã€‚
 	_asm{
-		push fs	// ±£´æfs¡£
+		push fs	// ä¿å­˜fsã€‚
 		push ds
-		pop fs	// Áîfs = ds¡£
-		push i	// ½«×Ö·û´®³¤¶ÈÑ¹Èë¶ÑÕ»(ÕâÈı¸öÈëÕ»ÊÇµ÷ÓÃ²ÎÊı)¡£
-		push offset buf	// ½«buf µÄµØÖ·Ñ¹Èë¶ÑÕ»¡£
-		push 0	// ½«ÊıÖµ0 Ñ¹Èë¶ÑÕ»¡£ÊÇÍ¨µÀºÅchannel¡£
-		call tty_write	// µ÷ÓÃtty_write º¯Êı¡£(kernel/chr_drv/tty_io.c,290)¡£
-		add esp,8	// Ìø¹ı£¨¶ªÆú£©Á½¸öÈëÕ»²ÎÊı(buf,channel)¡£
-		pop i	// µ¯³ö×Ö·û´®³¤¶ÈÖµ£¬×÷Îª·µ»ØÖµ¡£
-		pop fs		// »Ö¸´Ô­fs ¼Ä´æÆ÷¡£
+		pop fs	// ä»¤fs = dsã€‚
+		push i	// å°†å­—ç¬¦ä¸²é•¿åº¦å‹å…¥å †æ ˆ(è¿™ä¸‰ä¸ªå…¥æ ˆæ˜¯è°ƒç”¨å‚æ•°)ã€‚
+		push offset buf	// å°†buf çš„åœ°å€å‹å…¥å †æ ˆã€‚
+		push 0	// å°†æ•°å€¼0 å‹å…¥å †æ ˆã€‚æ˜¯é€šé“å·channelã€‚
+		call tty_write	// è°ƒç”¨tty_write å‡½æ•°ã€‚(kernel/chr_drv/tty_io.c,290)ã€‚
+		add esp,8	// è·³è¿‡ï¼ˆä¸¢å¼ƒï¼‰ä¸¤ä¸ªå…¥æ ˆå‚æ•°(buf,channel)ã€‚
+		pop i	// å¼¹å‡ºå­—ç¬¦ä¸²é•¿åº¦å€¼ï¼Œä½œä¸ºè¿”å›å€¼ã€‚
+		pop fs		// æ¢å¤åŸfs å¯„å­˜å™¨ã€‚
 	}
  /* __asm__ ("push %%fs\n\t"
 	   "push %%ds\n\t" "pop %%fs\n\t"
@@ -57,6 +57,6 @@ int printk (const char *fmt, ...)
 	   "addl $8,%%esp\n\t"
 	   "popl %0\n\t"
 	   "pop %%fs"
-::"r" (i):"ax", "cx", "dx");	// Í¨Öª±àÒëÆ÷£¬¼Ä´æÆ÷ax,cx,dx Öµ¿ÉÄÜÒÑ¾­¸Ä±ä¡£*/
-	return i;			// ·µ»Ø×Ö·û´®³¤¶È¡£
+::"r" (i):"ax", "cx", "dx");	// é€šçŸ¥ç¼–è¯‘å™¨ï¼Œå¯„å­˜å™¨ax,cx,dx å€¼å¯èƒ½å·²ç»æ”¹å˜ã€‚*/
+	return i;			// è¿”å›å­—ç¬¦ä¸²é•¿åº¦ã€‚
 }

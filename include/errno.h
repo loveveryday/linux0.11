@@ -14,57 +14,57 @@
 * NOTE! Remember to change strerror() if you change this file!
 */
 /*
-* ok��������û�еõ��κ������йس����ŵ����ϣ���ֻ��ʹ����minix ϵͳ
-* ��ͬ�ĳ������ˡ�
-* ϣ����Щ��POSIX ���ݵĻ�����һ���̶����������ģ��Ҳ�֪��������POSIX
-* û�и����� - Ҫ������ǵĻ쵰��׼��Ҫ��Ǯ����
+* ok，由于我没有得到任何其它有关出错号的资料，我只能使用与minix 系统
+* 相同的出错号了。
+* 希望这些是POSIX 兼容的或者在一定程度上是这样的，我不知道（而且POSIX
+* 没有告诉我 - 要获得他们的混蛋标准需要出钱）。
 *
-* ����û��ʹ��minix ������_SIGN �أ������ں˵ķ���ֵ�����Լ���������š�
+* 我们没有使用minix 那样的_SIGN 簇，所以内核的返回值必须自己辨别正负号。
 *
-* ע�⣡�����ı���ļ��Ļ�������ҲҪ�޸�strerror()������
+* 注意！如果你改变该文件的话，记着也要修改strerror()函数。
 */
 
 extern int errno;
 
-#define ERROR 99		// һ�����
-#define EPERM 1			// ����û�����ɡ�
-#define ENOENT 2		// �ļ���Ŀ¼�����ڡ�
-#define ESRCH 3			// ָ���Ľ��̲����ڡ�
-#define EINTR 4			// �жϵĺ������á�
-#define EIO 5			// ����/�������
-#define ENXIO 6			// ָ���豸���ַ�����ڡ�
-#define E2BIG 7			// �����б�̫����
-#define ENOEXEC 8		// ִ�г����ʽ����
-#define EBADF 9			// �ļ����(������)����
-#define ECHILD 10		// �ӽ��̲����ڡ�
-#define EAGAIN 11		// ��Դ��ʱ�����á�
-#define ENOMEM 12		// �ڴ治�㡣
-#define EACCES 13		// û������Ȩ�ޡ�
-#define EFAULT 14		// ��ַ����
-#define ENOTBLK 15		// ���ǿ��豸�ļ���
-#define EBUSY 16		// ��Դ��æ��
-#define EEXIST 17		// �ļ��Ѵ��ڡ�
-#define EXDEV 18		// �Ƿ����ӡ�
-#define ENODEV 19		// �豸�����ڡ�
-#define ENOTDIR 20		// ����Ŀ¼�ļ���
-#define EISDIR 21		// ��Ŀ¼�ļ���
-#define EINVAL 22		// ������Ч��
-#define ENFILE 23		// ϵͳ���ļ���̫�ࡣ
-#define EMFILE 24		// ���ļ���̫�ࡣ
-#define ENOTTY 25		// ��ǡ����IO ���Ʋ���(û��tty �ն�)��
-#define ETXTBSY 26		// ����ʹ�á�
-#define EFBIG 27		// �ļ�̫��
-#define ENOSPC 28		// �豸�������豸�Ѿ�û�пռ䣩��
-#define ESPIPE 29		// ��Ч���ļ�ָ���ض�λ��
-#define EROFS 30		// �ļ�ϵͳֻ����
-#define EMLINK 31		// ����̫�ࡣ
-#define EPIPE 32		// �ܵ�����
-#define EDOM 33			// ��(domain)������
-#define ERANGE 34		// ���̫��
-#define EDEADLK 35		// ������Դ������
-#define ENAMETOOLONG 36		// �ļ���̫����
-#define ENOLCK 37		// û���������á�
-#define ENOSYS 38		// ���ܻ�û��ʵ�֡�
-#define ENOTEMPTY 39		// Ŀ¼���ա�
+#define ERROR 99		// 一般错误。
+#define EPERM 1			// 操作没有许可。
+#define ENOENT 2		// 文件或目录不存在。
+#define ESRCH 3			// 指定的进程不存在。
+#define EINTR 4			// 中断的函数调用。
+#define EIO 5			// 输入/输出错。
+#define ENXIO 6			// 指定设备或地址不存在。
+#define E2BIG 7			// 参数列表太长。
+#define ENOEXEC 8		// 执行程序格式错误。
+#define EBADF 9			// 文件句柄(描述符)错误。
+#define ECHILD 10		// 子进程不存在。
+#define EAGAIN 11		// 资源暂时不可用。
+#define ENOMEM 12		// 内存不足。
+#define EACCES 13		// 没有许可权限。
+#define EFAULT 14		// 地址错。
+#define ENOTBLK 15		// 不是块设备文件。
+#define EBUSY 16		// 资源正忙。
+#define EEXIST 17		// 文件已存在。
+#define EXDEV 18		// 非法连接。
+#define ENODEV 19		// 设备不存在。
+#define ENOTDIR 20		// 不是目录文件。
+#define EISDIR 21		// 是目录文件。
+#define EINVAL 22		// 参数无效。
+#define ENFILE 23		// 系统打开文件数太多。
+#define EMFILE 24		// 打开文件数太多。
+#define ENOTTY 25		// 不恰当的IO 控制操作(没有tty 终端)。
+#define ETXTBSY 26		// 不再使用。
+#define EFBIG 27		// 文件太大。
+#define ENOSPC 28		// 设备已满（设备已经没有空间）。
+#define ESPIPE 29		// 无效的文件指针重定位。
+#define EROFS 30		// 文件系统只读。
+#define EMLINK 31		// 连接太多。
+#define EPIPE 32		// 管道错。
+#define EDOM 33			// 域(domain)出错。
+#define ERANGE 34		// 结果太大。
+#define EDEADLK 35		// 避免资源死锁。
+#define ENAMETOOLONG 36		// 文件名太长。
+#define ENOLCK 37		// 没有锁定可用。
+#define ENOSYS 38		// 功能还没有实现。
+#define ENOTEMPTY 39		// 目录不空。
 
 #endif

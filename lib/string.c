@@ -2,10 +2,10 @@
  *  linux/lib/string.c
  *
  *  (C) 1991  Linus Torvalds
- * ËùÓĞ×Ö·û´®²Ù×÷º¯ÊıÒÑ¾­ÔÚstring.h ÖĞÊµÏÖ£¬Òò´Ëstring.c ³ÌĞò½ö°üº¬string.h Í·ÎÄ¼ş¡£
+ * æ‰€æœ‰å­—ç¬¦ä¸²æ“ä½œå‡½æ•°å·²ç»åœ¨string.h ä¸­å®ç°ï¼Œå› æ­¤string.c ç¨‹åºä»…åŒ…å«string.h å¤´æ–‡ä»¶ã€‚
 
 
-#ifndef __GNUC__            // ĞèÒªGNU µÄC ±àÒëÆ÷±àÒë¡£
+#ifndef __GNUC__            // éœ€è¦GNU çš„C ç¼–è¯‘å™¨ç¼–è¯‘ã€‚
 #error "I want gcc!"
 #endif
  */
