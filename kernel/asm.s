@@ -12,31 +12,31 @@
 ;* file also handles (hopefully) fpu-exceptions due to TS-bit, as
 ;* the fpu must be properly saved/resored. This hasn't been tested.
 ;* eax = -1
-;* ÏµÍ³ÖĞ¶Ïµ÷ÓÃ(eax=µ÷ÓÃºÅ)
-;* ebx,ecx,edx ÖĞ·ÅÓĞµ÷ÓÃ²ÎÊı
-;* µ÷ÓÃºÅ³¬·¶Î§?
-;* ÖĞ¶Ï·µ»Ø
-;* ¼Ä´æÆ÷ÈëÕ»
-;* ds,es Ö¸ÏòÄÚºË´úÂë¶Î
-;* fs Ö¸Ïò¾Ö²¿Êı¾İ¶Î(ÓÃ»§Êı¾İ)
-;* µ÷ÓÃ¶ÔÓ¦µÄC ´¦Àíº¯Êı
-;* ÈÎÎñ×´Ì¬?
-;* µ÷ÓÃschedule() Ê±¼äÆ¬=0£¿
-;* ³õÊ¼ÈÎÎñ£¿
-;* µ¯³öÈëÕ»µÄ¼Ä´æÆ÷
-;* ³¬¼¶ÓÃ»§³ÌĞò?
-;* ÓÃ»§¶ÑÕ»?
-;* ¸ù¾İ½ø³ÌĞÅºÅÎ»Í¼È¡½ø³ÌµÄ×î
-;* Ğ¡ĞÅºÅÁ¿£¬µ÷ÓÃdo signal()
+;* ç³»ç»Ÿä¸­æ–­è°ƒç”¨(eax=è°ƒç”¨å·)
+;* ebx,ecx,edx ä¸­æ”¾æœ‰è°ƒç”¨å‚æ•°
+;* è°ƒç”¨å·è¶…èŒƒå›´?
+;* ä¸­æ–­è¿”å›
+;* å¯„å­˜å™¨å…¥æ ˆ
+;* ds,es æŒ‡å‘å†…æ ¸ä»£ç æ®µ
+;* fs æŒ‡å‘å±€éƒ¨æ•°æ®æ®µ(ç”¨æˆ·æ•°æ®)
+;* è°ƒç”¨å¯¹åº”çš„C å¤„ç†å‡½æ•°
+;* ä»»åŠ¡çŠ¶æ€?
+;* è°ƒç”¨schedule() æ—¶é—´ç‰‡=0ï¼Ÿ
+;* åˆå§‹ä»»åŠ¡ï¼Ÿ
+;* å¼¹å‡ºå…¥æ ˆçš„å¯„å­˜å™¨
+;* è¶…çº§ç”¨æˆ·ç¨‹åº?
+;* ç”¨æˆ·å †æ ˆ?
+;* æ ¹æ®è¿›ç¨‹ä¿¡å·ä½å›¾å–è¿›ç¨‹çš„æœ€
+;* å°ä¿¡å·é‡ï¼Œè°ƒç”¨do signal()
 ;*/
 ;/*
-;* asm.s ³ÌĞòÖĞ°üÀ¨´ó²¿·ÖµÄÓ²¼ş¹ÊÕÏ£¨»ò³ö´í£©´¦ÀíµÄµ×²ã´Î´úÂë¡£Ò³Òì³£ÊÇÓÉÄÚ´æ¹ÜÀí³ÌĞò
-;* mm ´¦ÀíµÄ£¬ËùÒÔ²»ÔÚÕâÀï¡£´Ë³ÌĞò»¹´¦Àí£¨Ï£ÍûÊÇÕâÑù£©ÓÉÓÚTS-Î»¶øÔì³ÉµÄfpu Òì³££¬
-;* ÒòÎªfpu ±ØĞëÕıÈ·µØ½øĞĞ±£´æ/»Ö¸´´¦Àí£¬ÕâĞ©»¹Ã»ÓĞ²âÊÔ¹ı¡£
+;* asm.s ç¨‹åºä¸­åŒ…æ‹¬å¤§éƒ¨åˆ†çš„ç¡¬ä»¶æ•…éšœï¼ˆæˆ–å‡ºé”™ï¼‰å¤„ç†çš„åº•å±‚æ¬¡ä»£ç ã€‚é¡µå¼‚å¸¸æ˜¯ç”±å†…å­˜ç®¡ç†ç¨‹åº
+;* mm å¤„ç†çš„ï¼Œæ‰€ä»¥ä¸åœ¨è¿™é‡Œã€‚æ­¤ç¨‹åºè¿˜å¤„ç†ï¼ˆå¸Œæœ›æ˜¯è¿™æ ·ï¼‰ç”±äºTS-ä½è€Œé€ æˆçš„fpu å¼‚å¸¸ï¼Œ
+;* å› ä¸ºfpu å¿…é¡»æ­£ç¡®åœ°è¿›è¡Œä¿å­˜/æ¢å¤å¤„ç†ï¼Œè¿™äº›è¿˜æ²¡æœ‰æµ‹è¯•è¿‡ã€‚
 ;*/
 
-;// ±¾´úÂëÎÄ¼şÖ÷ÒªÉæ¼°¶ÔIntel ±£ÁôµÄÖĞ¶Ïint0--int16 µÄ´¦Àí£¨int17-int31 Áô×÷½ñºóÊ¹ÓÃ£©¡£
-;// ÒÔÏÂÊÇÒ»Ğ©È«¾Öº¯ÊıÃûµÄÉùÃ÷£¬ÆäÔ­ĞÎÔÚtraps.c ÖĞËµÃ÷¡£
+;// æœ¬ä»£ç æ–‡ä»¶ä¸»è¦æ¶‰åŠå¯¹Intel ä¿ç•™çš„ä¸­æ–­int0--int16 çš„å¤„ç†ï¼ˆint17-int31 ç•™ä½œä»Šåä½¿ç”¨ï¼‰ã€‚
+;// ä»¥ä¸‹æ˜¯ä¸€äº›å…¨å±€å‡½æ•°åçš„å£°æ˜ï¼Œå…¶åŸå½¢åœ¨traps.c ä¸­è¯´æ˜ã€‚
 extrn _do_divide_error:far, _do_int3:far, _do_nmi:far, _do_overflow:far
 extrn _do_bounds:far, _do_invalid_op:far, _do_coprocessor_segment_overrun:far
 extrn _do_reserved:far, _coprocessor_error:far ptr, _do_double_fault:far
@@ -48,32 +48,32 @@ public _double_fault,_coprocessor_segment_overrun
 public _invalid_TSS,_segment_not_present,_stack_segment
 public _general_protection,_irq13,_reserved
 
-;// int0 -- £¨ÏÂÃæÕâ¶Î´úÂëµÄº¬Òå²Î¼ûÍ¼4.1(a)£©¡£
-;// ÏÂÃæÊÇ±»Áã³ı³ö´í(divide_error)´¦Àí´úÂë¡£±êºÅ'_divide_error'Êµ¼ÊÉÏÊÇC ÓïÑÔº¯
-;// Êıdivide_error()±àÒëºóËùÉú³ÉÄ£¿éÖĞ¶ÔÓ¦µÄÃû³Æ¡£'_do_divide_error'º¯ÊıÔÚtraps.c ÖĞ¡£
+;// int0 -- ï¼ˆä¸‹é¢è¿™æ®µä»£ç çš„å«ä¹‰å‚è§å›¾4.1(a)ï¼‰ã€‚
+;// ä¸‹é¢æ˜¯è¢«é›¶é™¤å‡ºé”™(divide_error)å¤„ç†ä»£ç ã€‚æ ‡å·'_divide_error'å®é™…ä¸Šæ˜¯C è¯­è¨€å‡½
+;// æ•°divide_error()ç¼–è¯‘åæ‰€ç”Ÿæˆæ¨¡å—ä¸­å¯¹åº”çš„åç§°ã€‚'_do_divide_error'å‡½æ•°åœ¨traps.c ä¸­ã€‚
 .code
 _divide_error:
-	push dword ptr _do_divide_error ;// Ê×ÏÈ°Ñ½«Òªµ÷ÓÃµÄº¯ÊıµØÖ·ÈëÕ»¡£Õâ¶Î³ÌĞòµÄ³ö´íºÅÎª0¡£
-no_error_code: ;// ÕâÀïÊÇÎŞ³ö´íºÅ´¦ÀíµÄÈë¿Ú´¦£¬¼ûÏÂÃæµÚ55 ĞĞµÈ¡£
-	xchg [esp],eax ;// _do_divide_error µÄµØÖ· -> eax£¬eax ±»½»»»ÈëÕ»¡£
+	push dword ptr _do_divide_error ;// é¦–å…ˆæŠŠå°†è¦è°ƒç”¨çš„å‡½æ•°åœ°å€å…¥æ ˆã€‚è¿™æ®µç¨‹åºçš„å‡ºé”™å·ä¸º0ã€‚
+no_error_code: ;// è¿™é‡Œæ˜¯æ— å‡ºé”™å·å¤„ç†çš„å…¥å£å¤„ï¼Œè§ä¸‹é¢ç¬¬55 è¡Œç­‰ã€‚
+	xchg [esp],eax ;// _do_divide_error çš„åœ°å€ -> eaxï¼Œeax è¢«äº¤æ¢å…¥æ ˆã€‚
 	push ebx
 	push ecx
 	push edx
 	push edi
 	push esi
 	push ebp
-	push ds ;// £¡£¡16 Î»µÄ¶Î¼Ä´æÆ÷ÈëÕ»ºóÒ²ÒªÕ¼ÓÃ4 ¸ö×Ö½Ú¡£
+	push ds ;// ï¼ï¼16 ä½çš„æ®µå¯„å­˜å™¨å…¥æ ˆåä¹Ÿè¦å ç”¨4 ä¸ªå­—èŠ‚ã€‚
 	push es
 	push fs
-	push 0 ;// "error code" ;// ½«³ö´íÂëÈëÕ»¡£
-	lea edx,[esp+44] ;// È¡Ô­µ÷ÓÃ·µ»ØµØÖ·´¦¶ÑÕ»Ö¸ÕëÎ»ÖÃ£¬²¢Ñ¹Èë¶ÑÕ»¡£
+	push 0 ;// "error code" ;// å°†å‡ºé”™ç å…¥æ ˆã€‚
+	lea edx,[esp+44] ;// å–åŸè°ƒç”¨è¿”å›åœ°å€å¤„å †æ ˆæŒ‡é’ˆä½ç½®ï¼Œå¹¶å‹å…¥å †æ ˆã€‚
 	push edx
-	mov edx,10h ;// ÄÚºË´úÂëÊı¾İ¶ÎÑ¡Ôñ·û¡£
+	mov edx,10h ;// å†…æ ¸ä»£ç æ•°æ®æ®µé€‰æ‹©ç¬¦ã€‚
 	mov ds,dx
 	mov es,dx
 	mov fs,dx
-	call eax ;// µ÷ÓÃC º¯Êıdo_divide_error()¡£
-	add esp,8 ;// ÈÃ¶ÑÕ»Ö¸ÕëÖØĞÂÖ¸Ïò¼Ä´æÆ÷fs ÈëÕ»´¦¡£
+	call eax ;// è°ƒç”¨C å‡½æ•°do_divide_error()ã€‚
+	add esp,8 ;// è®©å †æ ˆæŒ‡é’ˆé‡æ–°æŒ‡å‘å¯„å­˜å™¨fs å…¥æ ˆå¤„ã€‚
 	pop fs
 	pop es
 	pop ds
@@ -83,73 +83,73 @@ no_error_code: ;// ÕâÀïÊÇÎŞ³ö´íºÅ´¦ÀíµÄÈë¿Ú´¦£¬¼ûÏÂÃæµÚ55 ĞĞµÈ¡£
 	pop edx
 	pop ecx
 	pop ebx
-	pop eax ;// µ¯³öÔ­À´eax ÖĞµÄÄÚÈİ¡£
+	pop eax ;// å¼¹å‡ºåŸæ¥eax ä¸­çš„å†…å®¹ã€‚
 	iretd
 
-;// int1 -- debug µ÷ÊÔÖĞ¶ÏÈë¿Úµã¡£´¦Àí¹ı³ÌÍ¬ÉÏ¡£
+;// int1 -- debug è°ƒè¯•ä¸­æ–­å…¥å£ç‚¹ã€‚å¤„ç†è¿‡ç¨‹åŒä¸Šã€‚
 _debug:
-	push _do_int3 ;// _do_debug C º¯ÊıÖ¸ÕëÈëÕ»¡£ÒÔÏÂÍ¬¡£
+	push _do_int3 ;// _do_debug C å‡½æ•°æŒ‡é’ˆå…¥æ ˆã€‚ä»¥ä¸‹åŒã€‚
 	jmp no_error_code
 
-;// int2 -- ·ÇÆÁ±ÎÖĞ¶Ïµ÷ÓÃÈë¿Úµã¡£
+;// int2 -- éå±è”½ä¸­æ–­è°ƒç”¨å…¥å£ç‚¹ã€‚
 _nmi:
 	push _do_nmi
 	jmp no_error_code
 
-;// int3 -- Í¬_debug¡£
+;// int3 -- åŒ_debugã€‚
 _int3:
 	push _do_int3
 	jmp no_error_code
 
-;// int4 -- Òç³ö³ö´í´¦ÀíÖĞ¶ÏÈë¿Úµã¡£
+;// int4 -- æº¢å‡ºå‡ºé”™å¤„ç†ä¸­æ–­å…¥å£ç‚¹ã€‚
 _overflow:
 	push _do_overflow
 	jmp no_error_code
 
-;// int5 -- ±ß½ç¼ì²é³ö´íÖĞ¶ÏÈë¿Úµã¡£
+;// int5 -- è¾¹ç•Œæ£€æŸ¥å‡ºé”™ä¸­æ–­å…¥å£ç‚¹ã€‚
 _bounds:
 	push _do_bounds
 	jmp no_error_code
 
-;// int6 -- ÎŞĞ§²Ù×÷Ö¸Áî³ö´íÖĞ¶ÏÈë¿Úµã¡£
+;// int6 -- æ— æ•ˆæ“ä½œæŒ‡ä»¤å‡ºé”™ä¸­æ–­å…¥å£ç‚¹ã€‚
 _invalid_op:
 	push _do_invalid_op
 	jmp no_error_code
 
-;// int9 -- Ğ­´¦ÀíÆ÷¶Î³¬³ö³ö´íÖĞ¶ÏÈë¿Úµã¡£
+;// int9 -- åå¤„ç†å™¨æ®µè¶…å‡ºå‡ºé”™ä¸­æ–­å…¥å£ç‚¹ã€‚
 _coprocessor_segment_overrun:
 	push _do_coprocessor_segment_overrun
 	jmp no_error_code
 
-;// int15 ¨C ±£Áô¡£
+;// int15 â€“ ä¿ç•™ã€‚
 _reserved:
 	push _do_reserved
 	jmp no_error_code
 
-;// int45 -- ( = 0x20 + 13 ) ÊıÑ§Ğ­´¦ÀíÆ÷£¨Coprocessor£©·¢³öµÄÖĞ¶Ï¡£
-;// µ±Ğ­´¦ÀíÆ÷Ö´ĞĞÍêÒ»¸ö²Ù×÷Ê±¾Í»á·¢³öIRQ13 ÖĞ¶ÏĞÅºÅ£¬ÒÔÍ¨ÖªCPU ²Ù×÷Íê³É¡£
+;// int45 -- ( = 0x20 + 13 ) æ•°å­¦åå¤„ç†å™¨ï¼ˆCoprocessorï¼‰å‘å‡ºçš„ä¸­æ–­ã€‚
+;// å½“åå¤„ç†å™¨æ‰§è¡Œå®Œä¸€ä¸ªæ“ä½œæ—¶å°±ä¼šå‘å‡ºIRQ13 ä¸­æ–­ä¿¡å·ï¼Œä»¥é€šçŸ¥CPU æ“ä½œå®Œæˆã€‚
 _irq13:
 	push eax
-	xor al,al ;// 80387 ÔÚÖ´ĞĞ¼ÆËãÊ±£¬CPU »áµÈ´ıÆä²Ù×÷µÄÍê³É¡£
-	out 0F0h,al ;// Í¨¹ıĞ´0xF0 ¶Ë¿Ú£¬±¾ÖĞ¶Ï½«Ïû³ıCPU µÄBUSY ÑÓĞøĞÅºÅ£¬²¢ÖØĞÂ
-;// ¼¤»î80387 µÄ´¦ÀíÆ÷À©Õ¹ÇëÇóÒı½ÅPEREQ¡£¸Ã²Ù×÷Ö÷ÒªÊÇÎªÁËÈ·±£
-;// ÔÚ¼ÌĞøÖ´ĞĞ80387 µÄÈÎºÎÖ¸ÁîÖ®Ç°£¬ÏìÓ¦±¾ÖĞ¶Ï¡£
+	xor al,al ;// 80387 åœ¨æ‰§è¡Œè®¡ç®—æ—¶ï¼ŒCPU ä¼šç­‰å¾…å…¶æ“ä½œçš„å®Œæˆã€‚
+	out 0F0h,al ;// é€šè¿‡å†™0xF0 ç«¯å£ï¼Œæœ¬ä¸­æ–­å°†æ¶ˆé™¤CPU çš„BUSY å»¶ç»­ä¿¡å·ï¼Œå¹¶é‡æ–°
+;// æ¿€æ´»80387 çš„å¤„ç†å™¨æ‰©å±•è¯·æ±‚å¼•è„šPEREQã€‚è¯¥æ“ä½œä¸»è¦æ˜¯ä¸ºäº†ç¡®ä¿
+;// åœ¨ç»§ç»­æ‰§è¡Œ80387 çš„ä»»ä½•æŒ‡ä»¤ä¹‹å‰ï¼Œå“åº”æœ¬ä¸­æ–­ã€‚
 	mov al,20h
-	out 20h,al ;// Ïò8259 Ö÷ÖĞ¶Ï¿ØÖÆĞ¾Æ¬·¢ËÍEOI£¨ÖĞ¶Ï½áÊø£©ĞÅºÅ¡£
-	jmp l1 ;// ÕâÁ½¸öÌø×ªÖ¸ÁîÆğÑÓÊ±×÷ÓÃ¡£
+	out 20h,al ;// å‘8259 ä¸»ä¸­æ–­æ§åˆ¶èŠ¯ç‰‡å‘é€EOIï¼ˆä¸­æ–­ç»“æŸï¼‰ä¿¡å·ã€‚
+	jmp l1 ;// è¿™ä¸¤ä¸ªè·³è½¬æŒ‡ä»¤èµ·å»¶æ—¶ä½œç”¨ã€‚
 l1: jmp l2
-l2: out 0A0h,al ;// ÔÙÏò8259 ´ÓÖĞ¶Ï¿ØÖÆĞ¾Æ¬·¢ËÍEOI£¨ÖĞ¶Ï½áÊø£©ĞÅºÅ¡£
+l2: out 0A0h,al ;// å†å‘8259 ä»ä¸­æ–­æ§åˆ¶èŠ¯ç‰‡å‘é€EOIï¼ˆä¸­æ–­ç»“æŸï¼‰ä¿¡å·ã€‚
 	pop eax
-	jmp _coprocessor_error ;// _coprocessor_error Ô­À´ÔÚ±¾ÎÄ¼şÖĞ£¬ÏÖÔÚÒÑ¾­·Åµ½
-							;// £¨kernel/system_call.s, 131£©
+	jmp _coprocessor_error ;// _coprocessor_error åŸæ¥åœ¨æœ¬æ–‡ä»¶ä¸­ï¼Œç°åœ¨å·²ç»æ”¾åˆ°
+							;// ï¼ˆkernel/system_call.s, 131ï¼‰
 
-;// ÒÔÏÂÖĞ¶ÏÔÚµ÷ÓÃÊ±»áÔÚÖĞ¶Ï·µ»ØµØÖ·Ö®ºó½«³ö´íºÅÑ¹Èë¶ÑÕ»£¬Òò´Ë·µ»ØÊ±Ò²ĞèÒª½«³ö´íºÅµ¯³ö¡£
-;// int8 -- Ë«³ö´í¹ÊÕÏ¡££¨ÏÂÃæÕâ¶Î´úÂëµÄº¬Òå²Î¼ûÍ¼4.1(b)£©¡£
+;// ä»¥ä¸‹ä¸­æ–­åœ¨è°ƒç”¨æ—¶ä¼šåœ¨ä¸­æ–­è¿”å›åœ°å€ä¹‹åå°†å‡ºé”™å·å‹å…¥å †æ ˆï¼Œå› æ­¤è¿”å›æ—¶ä¹Ÿéœ€è¦å°†å‡ºé”™å·å¼¹å‡ºã€‚
+;// int8 -- åŒå‡ºé”™æ•…éšœã€‚ï¼ˆä¸‹é¢è¿™æ®µä»£ç çš„å«ä¹‰å‚è§å›¾4.1(b)ï¼‰ã€‚
 _double_fault:
-	push _do_double_fault ;// C º¯ÊıµØÖ·ÈëÕ»¡£
+	push _do_double_fault ;// C å‡½æ•°åœ°å€å…¥æ ˆã€‚
 error_code:
-	xchg [esp+4],eax ;// error code <-> %eax£¬eax Ô­À´µÄÖµ±»±£´æÔÚ¶ÑÕ»ÉÏ¡£
-	xchg [esp],ebx ;// &function <-> %ebx£¬ebx Ô­À´µÄÖµ±»±£´æÔÚ¶ÑÕ»ÉÏ¡£
+	xchg [esp+4],eax ;// error code <-> %eaxï¼Œeax åŸæ¥çš„å€¼è¢«ä¿å­˜åœ¨å †æ ˆä¸Šã€‚
+	xchg [esp],ebx ;// &function <-> %ebxï¼Œebx åŸæ¥çš„å€¼è¢«ä¿å­˜åœ¨å †æ ˆä¸Šã€‚
 	push ecx
 	push edx
 	push edi
@@ -158,15 +158,15 @@ error_code:
 	push ds
 	push es
 	push fs
-	push eax ;// error code ;// ³ö´íºÅÈëÕ»¡£
-	lea eax,[esp+44] ;// offset ;// ³ÌĞò·µ»ØµØÖ·´¦¶ÑÕ»Ö¸ÕëÎ»ÖÃÖµÈëÕ»¡£
+	push eax ;// error code ;// å‡ºé”™å·å…¥æ ˆã€‚
+	lea eax,[esp+44] ;// offset ;// ç¨‹åºè¿”å›åœ°å€å¤„å †æ ˆæŒ‡é’ˆä½ç½®å€¼å…¥æ ˆã€‚
 	push eax
-	mov eax,10h ;// ÖÃÄÚºËÊı¾İ¶ÎÑ¡Ôñ·û¡£
+	mov eax,10h ;// ç½®å†…æ ¸æ•°æ®æ®µé€‰æ‹©ç¬¦ã€‚
 	mov ds,ax
 	mov es,ax
 	mov fs,ax
-	call ebx ;// µ÷ÓÃÏàÓ¦µÄC º¯Êı£¬Æä²ÎÊıÒÑÈëÕ»¡£
-	add esp,8 ;// ¶ÑÕ»Ö¸ÕëÖØĞÂÖ¸ÏòÕ»ÖĞ·ÅÖÃfs ÄÚÈİµÄÎ»ÖÃ¡£
+	call ebx ;// è°ƒç”¨ç›¸åº”çš„C å‡½æ•°ï¼Œå…¶å‚æ•°å·²å…¥æ ˆã€‚
+	add esp,8 ;// å †æ ˆæŒ‡é’ˆé‡æ–°æŒ‡å‘æ ˆä¸­æ”¾ç½®fs å†…å®¹çš„ä½ç½®ã€‚
 	pop fs
 	pop es
 	pop ds
@@ -179,29 +179,29 @@ error_code:
 	pop eax
 	iretd
 
-;// int10 -- ÎŞĞ§µÄÈÎÎñ×´Ì¬¶Î(TSS)¡£
+;// int10 -- æ— æ•ˆçš„ä»»åŠ¡çŠ¶æ€æ®µ(TSS)ã€‚
 _invalid_TSS:
 	push _do_invalid_TSS
 	jmp error_code
 
-;// int11 -- ¶Î²»´æÔÚ¡£
+;// int11 -- æ®µä¸å­˜åœ¨ã€‚
 _segment_not_present:
 	push _do_segment_not_present
 	jmp error_code
 
-;// int12 -- ¶ÑÕ»¶Î´íÎó¡£
+;// int12 -- å †æ ˆæ®µé”™è¯¯ã€‚
 _stack_segment:
 	push _do_stack_segment
 	jmp error_code
 
-;// int13 -- Ò»°ã±£»¤ĞÔ³ö´í¡£
+;// int13 -- ä¸€èˆ¬ä¿æŠ¤æ€§å‡ºé”™ã€‚
 _general_protection:
 	push _do_general_protection
 	jmp error_code
 
-;// int7 -- Éè±¸²»´æÔÚ(_device_not_available)ÔÚ(kernel/system_call.s,148)
-;// int14 -- Ò³´íÎó(_page_fault)ÔÚ(mm/page.s,14)
-;// int16 -- Ğ­´¦ÀíÆ÷´íÎó(_coprocessor_error)ÔÚ(kernel/system_call.s,131)
-;// Ê±ÖÓÖĞ¶Ïint 0x20 (_timer_interrupt)ÔÚ(kernel/system_call.s,176)
-;// ÏµÍ³µ÷ÓÃint 0x80 (_system_call)ÔÚ£¨kernel/system_call.s,80£©
+;// int7 -- è®¾å¤‡ä¸å­˜åœ¨(_device_not_available)åœ¨(kernel/system_call.s,148)
+;// int14 -- é¡µé”™è¯¯(_page_fault)åœ¨(mm/page.s,14)
+;// int16 -- åå¤„ç†å™¨é”™è¯¯(_coprocessor_error)åœ¨(kernel/system_call.s,131)
+;// æ—¶é’Ÿä¸­æ–­int 0x20 (_timer_interrupt)åœ¨(kernel/system_call.s,176)
+;// ç³»ç»Ÿè°ƒç”¨int 0x80 (_system_call)åœ¨ï¼ˆkernel/system_call.s,80ï¼‰
 end

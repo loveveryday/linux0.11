@@ -5,96 +5,96 @@
  */
 #include <set_seg.h>
 
-// �����ͷ�ļ�������ϵͳ�и��ֳ����š�(Linus ��minix ��������)��
+// 错误号头文件。包含系统中各种出错号。(Linus 从minix 中引进的)。
 #include <errno.h>
-// ����ͷ�ļ��������˻�����ϵͳ�������͡�
+// 类型头文件。定义了基本的系统数据类型。
 #include <sys/types.h>
 
-// ���ȳ���ͷ�ļ�������������ṹtask_struct����ʼ����0 �����ݣ�
-// ����һЩ�й��������������úͻ�ȡ��Ƕ��ʽ��ຯ������䡣
+// 调度程序头文件，定义了任务结构task_struct、初始任务0 的数据，
+// 还有一些有关描述符参数设置和获取的嵌入式汇编函数宏语句。
 #include <linux/sched.h>
-// �ں�ͷ�ļ�������һЩ�ں˳��ú�����ԭ�ζ��塣
+// 内核头文件。含有一些内核常用函数的原形定义。
 #include <linux/kernel.h>
 
-// �β���ͷ�ļ����������йضμĴ���������Ƕ��ʽ��ຯ����
+// 段操作头文件。定义了有关段寄存器操作的嵌入式汇编函数。
 #include <asm/segment.h>
-// io ͷ�ļ�������Ӳ���˿�����/���������䡣
+// io 头文件。定义硬件端口输入/输出宏汇编语句。
 #include <asm/io.h>
 
-extern int tty_read(unsigned minor,char * buf,int count);// �ն˶���
-extern int tty_write(unsigned minor,char * buf,int count);// �ն�д��
+extern int tty_read(unsigned minor,char * buf,int count);// 终端读。
+extern int tty_write(unsigned minor,char * buf,int count);// 终端写。
 
-// �����ַ��豸��д����ָ�����͡�
+// 定义字符设备读写函数指针类型。
 typedef (*crw_ptr)(int rw,unsigned minor,char * buf,int count,off_t * pos);
 
-//// �����ն˶�д����������
-// ������rw - ��д���minor - �ն����豸�ţ�buf - ��������cout - ��д�ֽ�����
-//       pos - ��д������ǰָ�룬�����ն˲�������ָ�����á�
-// ���أ�ʵ�ʶ�д���ֽ�����
+//// 串口终端读写操作函数。
+// 参数：rw - 读写命令；minor - 终端子设备号；buf - 缓冲区；cout - 读写字节数；
+//       pos - 读写操作当前指针，对于终端操作，该指针无用。
+// 返回：实际读写的字节数。
 static int rw_ttyx(int rw,unsigned minor,char * buf,int count,off_t * pos)
 {
 	return ((rw==READ)?tty_read(minor,buf,count):
 		tty_write(minor,buf,count));
 }
 
-//// �ն˶�д����������
-// ͬ��rw_ttyx()��ֻ�������˶Խ����Ƿ��п����ն˵ļ�⡣
+//// 终端读写操作函数。
+// 同上rw_ttyx()，只是增加了对进程是否有控制终端的检测。
 static int rw_tty(int rw,unsigned minor,char * buf,int count, off_t * pos)
 {
-	// ������û�ж�Ӧ�Ŀ����նˣ��򷵻س����š�
+	// 若进程没有对应的控制终端，则返回出错号。
 	if (current->tty<0)
 		return -EPERM;
-	// ��������ն˶�д����rw_ttyx()��������ʵ�ʶ�д�ֽ�����
+	// 否则调用终端读写函数rw_ttyx()，并返回实际读写字节数。
 	return rw_ttyx(rw,current->tty,buf,count,pos);
 }
 
-//// �ڴ����ݶ�д��δʵ�֡�
+//// 内存数据读写。未实现。
 static int rw_ram(int rw,char * buf, int count, off_t *pos)
 {
 	return -EIO;
 }
 
-//// �ڴ����ݶ�д����������δʵ�֡�
+//// 内存数据读写操作函数。未实现。
 static int rw_mem(int rw,char * buf, int count, off_t * pos)
 {
 	return -EIO;
 }
 
-//// �ں���������д������δʵ�֡�
+//// 内核数据区读写函数。未实现。
 static int rw_kmem(int rw,char * buf, int count, off_t * pos)
 {
 	return -EIO;
 }
 
-// �˿ڶ�д����������
-// ������rw - ��д���buf - ��������cout - ��д�ֽ�����pos - �˿ڵ�ַ��
-// ���أ�ʵ�ʶ�д���ֽ�����
+// 端口读写操作函数。
+// 参数：rw - 读写命令；buf - 缓冲区；cout - 读写字节数；pos - 端口地址。
+// 返回：实际读写的字节数。
 static int rw_port(int rw,char * buf, int count, off_t * pos)
 {
 	int i=*pos;
 
-// ������Ҫ���д���ֽ��������Ҷ˿ڵ�ַС��64k ʱ��ѭ��ִ�е����ֽڵĶ�д������
+// 对于所要求读写的字节数，并且端口地址小于64k 时，循环执行单个字节的读写操作。
 	while (count-->0 && i<65536) {
-// ���Ƕ������Ӷ˿�i �ж�ȡһ�ֽ����ݲ��ŵ��û��������С�
+// 若是读命令，则从端口i 中读取一字节内容并放到用户缓冲区中。
 		if (rw==READ)
 			put_fs_byte(inb(i),buf++);
-// ����д�������û����ݻ�������ȡһ�ֽ�������˿�i��
+// 若是写命令，则从用户数据缓冲区中取一字节输出到端口i。
 		else
 			outb(get_fs_byte(buf++),i);
-// ǰ��һ���˿ڡ�[??]
+// 前移一个端口。[??]
 		i++;
 	}
-// �����/д���ֽ���������Ӧ������дָ�롣
+// 计算读/写的字节数，并相应调整读写指针。
 	i -= *pos;
 	*pos += i;
-// ���ض�/д���ֽ�����
+// 返回读/写的字节数。
 	return i;
 }
 
-//// �ڴ��д����������
+//// 内存读写操作函数。
 static int rw_memory(int rw, unsigned minor, char * buf, int count, off_t * pos)
 {
-// �����ڴ��豸���豸�ţ��ֱ���ò�ͬ���ڴ��д������
+// 根据内存设备子设备号，分别调用不同的内存读写函数。
 	switch(minor) {
 		case 0:
 			return rw_ram(rw,buf,count,pos);
@@ -111,33 +111,33 @@ static int rw_memory(int rw, unsigned minor, char * buf, int count, off_t * pos)
 	}
 }
 
-// ����ϵͳ���豸������
+// 定义系统中设备种数。
 #define NRDEVS ((sizeof (crw_table))/(sizeof (crw_ptr)))
 
-// �ַ��豸��д����ָ�����
+// 字符设备读写函数指针表。
 static crw_ptr crw_table[]={
-	NULL,		/* ���豸(���豸) */
-	rw_memory,	/* /dev/mem �� */
-	NULL,		/* /dev/fd ���� */
-	NULL,		/* /dev/hd Ӳ�� */
-	rw_ttyx,	/* /dev/ttyx �����ն� */
-	rw_tty,		/* /dev/tty �ն� */
-	NULL,		/* /dev/lp ��ӡ�� */
-	NULL};		/* δ�����ܵ� */
+	NULL,		/* 无设备(空设备) */
+	rw_memory,	/* /dev/mem 等 */
+	NULL,		/* /dev/fd 软驱 */
+	NULL,		/* /dev/hd 硬盘 */
+	rw_ttyx,	/* /dev/ttyx 串口终端 */
+	rw_tty,		/* /dev/tty 终端 */
+	NULL,		/* /dev/lp 打印机 */
+	NULL};		/* 未命名管道 */
 
-//// �ַ��豸��д����������
-// ������rw - ��д���dev - �豸�ţ�buf - ��������count - ��д�ֽ�����pos -��дָ�롣
-// ���أ�ʵ�ʶ�/д�ֽ�����
+//// 字符设备读写操作函数。
+// 参数：rw - 读写命令；dev - 设备号；buf - 缓冲区；count - 读写字节数；pos -读写指针。
+// 返回：实际读/写字节数。
 int rw_char(int rw,int dev, char * buf, int count, off_t * pos)
 {
 	crw_ptr call_addr;
 
-// ����豸�ų���ϵͳ�豸�����򷵻س����롣
+// 如果设备号超出系统设备数，则返回出错码。
 	if (MAJOR(dev)>=NRDEVS)
 		return -ENODEV;
-// �����豸û�ж�Ӧ�Ķ�/д�������򷵻س����롣
+// 若该设备没有对应的读/写函数，则返回出错码。
 	if (!(call_addr=crw_table[MAJOR(dev)]))
 		return -ENODEV;
-// ���ö�Ӧ�豸�Ķ�д����������������ʵ�ʶ�/д���ֽ�����
+// 调用对应设备的读写操作函数，并返回实际读/写的字节数。
 	return call_addr(rw,MINOR(dev),buf,count,pos);
 }

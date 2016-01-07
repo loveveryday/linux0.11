@@ -1,15 +1,15 @@
 #ifndef _SYS_UTSNAME_H
 #define _SYS_UTSNAME_H
 
-#include <sys/types.h>		// ÀàĞÍÍ·ÎÄ¼ş¡£¶¨ÒåÁË»ù±¾µÄÏµÍ³Êı¾İÀàĞÍ¡£
+#include <sys/types.h>		// ç±»å‹å¤´æ–‡ä»¶ã€‚å®šä¹‰äº†åŸºæœ¬çš„ç³»ç»Ÿæ•°æ®ç±»å‹ã€‚
 
 struct utsname
 {
-  char sysname[9];		// ±¾°æ±¾²Ù×÷ÏµÍ³µÄÃû³Æ¡£
-  char nodename[9];		// ÓëÊµÏÖÏà¹ØµÄÍøÂçÖĞ½ÚµãÃû³Æ¡£
-  char release[9];		// ±¾ÊµÏÖµÄµ±Ç°·¢ĞĞ¼¶±ğ¡£
-  char version[9];		// ±¾´Î·¢ĞĞµÄ°æ±¾¼¶±ğ¡£
-  char machine[9];		// ÏµÍ³ÔËĞĞµÄÓ²¼şÀàĞÍÃû³Æ¡£
+  char sysname[9];		// æœ¬ç‰ˆæœ¬æ“ä½œç³»ç»Ÿçš„åç§°ã€‚
+  char nodename[9];		// ä¸å®ç°ç›¸å…³çš„ç½‘ç»œä¸­èŠ‚ç‚¹åç§°ã€‚
+  char release[9];		// æœ¬å®ç°çš„å½“å‰å‘è¡Œçº§åˆ«ã€‚
+  char version[9];		// æœ¬æ¬¡å‘è¡Œçš„ç‰ˆæœ¬çº§åˆ«ã€‚
+  char machine[9];		// ç³»ç»Ÿè¿è¡Œçš„ç¡¬ä»¶ç±»å‹åç§°ã€‚
 };
 
 extern int uname (struct utsname *utsbuf);

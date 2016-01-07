@@ -1,65 +1,65 @@
 #ifndef _SIGNAL_H
 #define _SIGNAL_H
 
-#include <sys/types.h>		// ÀàĞÍÍ·ÎÄ¼ş¡£¶¨ÒåÁË»ù±¾µÄÏµÍ³Êı¾İÀàĞÍ¡£
+#include <sys/types.h>		// ç±»å‹å¤´æ–‡ä»¶ã€‚å®šä¹‰äº†åŸºæœ¬çš„ç³»ç»Ÿæ•°æ®ç±»å‹ã€‚
 
-typedef int sig_atomic_t;	// ¶¨ÒåĞÅºÅÔ­×Ó²Ù×÷ÀàĞÍ¡£
-typedef unsigned int sigset_t;	/* 32 bits */// ¶¨ÒåĞÅºÅ¼¯ÀàĞÍ¡£
+typedef int sig_atomic_t;	// å®šä¹‰ä¿¡å·åŸå­æ“ä½œç±»å‹ã€‚
+typedef unsigned int sigset_t;	/* 32 bits */// å®šä¹‰ä¿¡å·é›†ç±»å‹ã€‚
 
-#define _NSIG 32		// ¶¨ÒåĞÅºÅÖÖÀà -- 32 ÖÖ¡£
+#define _NSIG 32		// å®šä¹‰ä¿¡å·ç§ç±» -- 32 ç§ã€‚
 #define NSIG _NSIG		// NSIG = _NSIG
 
-// ÒÔÏÂÕâĞ©ÊÇLinux 0.11 ÄÚºËÖĞ¶¨ÒåµÄĞÅºÅ¡£
-#define SIGHUP 1		// Hang Up -- ¹Ò¶Ï¿ØÖÆÖÕ¶Ë»ò½ø³Ì¡£
-#define SIGINT 2		// Interrupt -- À´×Ô¼üÅÌµÄÖĞ¶Ï¡£
-#define SIGQUIT 3		// Quit -- À´×Ô¼üÅÌµÄÍË³ö¡£
-#define SIGILL 4		// Illeagle -- ·Ç·¨Ö¸Áî¡£
-#define SIGTRAP 5		// Trap -- ¸ú×Ù¶Ïµã¡£
-#define SIGABRT 6		// Abort -- Òì³£½áÊø¡£
-#define SIGIOT 6		// IO Trap -- Í¬ÉÏ¡£
-#define SIGUNUSED 7		// Unused -- Ã»ÓĞÊ¹ÓÃ¡£
-#define SIGFPE 8		// FPE -- Ğ­´¦ÀíÆ÷³ö´í¡£
-#define SIGKILL 9		// Kill -- Ç¿ÆÈ½ø³ÌÖÕÖ¹¡£
-#define SIGUSR1 10		// User1 -- ÓÃ»§ĞÅºÅ1£¬½ø³Ì¿ÉÊ¹ÓÃ¡£
-#define SIGSEGV 11		// Segment Violation -- ÎŞĞ§ÄÚ´æÒıÓÃ¡£
-#define SIGUSR2 12		// User2 -- ÓÃ»§ĞÅºÅ2£¬½ø³Ì¿ÉÊ¹ÓÃ¡£
-#define SIGPIPE 13		// Pipe -- ¹ÜµÀĞ´³ö´í£¬ÎŞ¶ÁÕß¡£
-#define SIGALRM 14		// Alarm -- ÊµÊ±¶¨Ê±Æ÷±¨¾¯¡£
-#define SIGTERM 15		// Terminate -- ½ø³ÌÖÕÖ¹¡£
-#define SIGSTKFLT 16		// Stack Fault -- Õ»³ö´í£¨Ğ­´¦ÀíÆ÷£©¡£
-#define SIGCHLD 17		// Child -- ×Ó½ø³ÌÍ£Ö¹»ò±»ÖÕÖ¹¡£
-#define SIGCONT 18		// Continue -- »Ö¸´½ø³Ì¼ÌĞøÖ´ĞĞ¡£
-#define SIGSTOP 19		// Stop -- Í£Ö¹½ø³ÌµÄÖ´ĞĞ¡£
-#define SIGTSTP 20		// TTY Stop -- tty ·¢³öÍ£Ö¹½ø³Ì£¬¿ÉºöÂÔ¡£
-#define SIGTTIN 21		// TTY In -- ºóÌ¨½ø³ÌÇëÇóÊäÈë¡£
-#define SIGTTOU 22		// TTY Out -- ºóÌ¨½ø³ÌÇëÇóÊä³ö¡£
+// ä»¥ä¸‹è¿™äº›æ˜¯Linux 0.11 å†…æ ¸ä¸­å®šä¹‰çš„ä¿¡å·ã€‚
+#define SIGHUP 1		// Hang Up -- æŒ‚æ–­æ§åˆ¶ç»ˆç«¯æˆ–è¿›ç¨‹ã€‚
+#define SIGINT 2		// Interrupt -- æ¥è‡ªé”®ç›˜çš„ä¸­æ–­ã€‚
+#define SIGQUIT 3		// Quit -- æ¥è‡ªé”®ç›˜çš„é€€å‡ºã€‚
+#define SIGILL 4		// Illeagle -- éæ³•æŒ‡ä»¤ã€‚
+#define SIGTRAP 5		// Trap -- è·Ÿè¸ªæ–­ç‚¹ã€‚
+#define SIGABRT 6		// Abort -- å¼‚å¸¸ç»“æŸã€‚
+#define SIGIOT 6		// IO Trap -- åŒä¸Šã€‚
+#define SIGUNUSED 7		// Unused -- æ²¡æœ‰ä½¿ç”¨ã€‚
+#define SIGFPE 8		// FPE -- åå¤„ç†å™¨å‡ºé”™ã€‚
+#define SIGKILL 9		// Kill -- å¼ºè¿«è¿›ç¨‹ç»ˆæ­¢ã€‚
+#define SIGUSR1 10		// User1 -- ç”¨æˆ·ä¿¡å·1ï¼Œè¿›ç¨‹å¯ä½¿ç”¨ã€‚
+#define SIGSEGV 11		// Segment Violation -- æ— æ•ˆå†…å­˜å¼•ç”¨ã€‚
+#define SIGUSR2 12		// User2 -- ç”¨æˆ·ä¿¡å·2ï¼Œè¿›ç¨‹å¯ä½¿ç”¨ã€‚
+#define SIGPIPE 13		// Pipe -- ç®¡é“å†™å‡ºé”™ï¼Œæ— è¯»è€…ã€‚
+#define SIGALRM 14		// Alarm -- å®æ—¶å®šæ—¶å™¨æŠ¥è­¦ã€‚
+#define SIGTERM 15		// Terminate -- è¿›ç¨‹ç»ˆæ­¢ã€‚
+#define SIGSTKFLT 16		// Stack Fault -- æ ˆå‡ºé”™ï¼ˆåå¤„ç†å™¨ï¼‰ã€‚
+#define SIGCHLD 17		// Child -- å­è¿›ç¨‹åœæ­¢æˆ–è¢«ç»ˆæ­¢ã€‚
+#define SIGCONT 18		// Continue -- æ¢å¤è¿›ç¨‹ç»§ç»­æ‰§è¡Œã€‚
+#define SIGSTOP 19		// Stop -- åœæ­¢è¿›ç¨‹çš„æ‰§è¡Œã€‚
+#define SIGTSTP 20		// TTY Stop -- tty å‘å‡ºåœæ­¢è¿›ç¨‹ï¼Œå¯å¿½ç•¥ã€‚
+#define SIGTTIN 21		// TTY In -- åå°è¿›ç¨‹è¯·æ±‚è¾“å…¥ã€‚
+#define SIGTTOU 22		// TTY Out -- åå°è¿›ç¨‹è¯·æ±‚è¾“å‡ºã€‚
 
 /* Ok, I haven't implemented sigactions, but trying to keep headers POSIX */
-/* OK£¬ÎÒ»¹Ã»ÓĞÊµÏÖsigactions µÄ±àÖÆ£¬µ«ÔÚÍ·ÎÄ¼şÖĞÈÔÏ£Íû×ñÊØPOSIX ±ê×¼ */
-#define SA_NOCLDSTOP 1		// µ±×Ó½ø³Ì´¦ÓÚÍ£Ö¹×´Ì¬£¬¾Í²»¶ÔSIGCHLD ´¦Àí¡£
-#define SA_NOMASK 0x40000000	// ²»×èÖ¹ÔÚÖ¸¶¨µÄĞÅºÅ´¦Àí³ÌĞò(ĞÅºÅ¾ä±ú)ÖĞÔÙÊÕµ½¸ÃĞÅºÅ¡£
-#define SA_ONESHOT 0x80000000	// ĞÅºÅ¾ä±úÒ»µ©±»µ÷ÓÃ¹ı¾Í»Ö¸´µ½Ä¬ÈÏ´¦Àí¾ä±ú¡£
+/* OKï¼Œæˆ‘è¿˜æ²¡æœ‰å®ç°sigactions çš„ç¼–åˆ¶ï¼Œä½†åœ¨å¤´æ–‡ä»¶ä¸­ä»å¸Œæœ›éµå®ˆPOSIX æ ‡å‡† */
+#define SA_NOCLDSTOP 1		// å½“å­è¿›ç¨‹å¤„äºåœæ­¢çŠ¶æ€ï¼Œå°±ä¸å¯¹SIGCHLD å¤„ç†ã€‚
+#define SA_NOMASK 0x40000000	// ä¸é˜»æ­¢åœ¨æŒ‡å®šçš„ä¿¡å·å¤„ç†ç¨‹åº(ä¿¡å·å¥æŸ„)ä¸­å†æ”¶åˆ°è¯¥ä¿¡å·ã€‚
+#define SA_ONESHOT 0x80000000	// ä¿¡å·å¥æŸ„ä¸€æ—¦è¢«è°ƒç”¨è¿‡å°±æ¢å¤åˆ°é»˜è®¤å¤„ç†å¥æŸ„ã€‚
 
-// ÒÔÏÂ²ÎÊıÓÃÓÚsigprocmask()-- ¸Ä±ä×èÈûĞÅºÅ¼¯(ÆÁ±ÎÂë)¡£ÕâĞ©²ÎÊı¿ÉÒÔ¸Ä±ä¸Ãº¯ÊıµÄĞĞÎª¡£
+// ä»¥ä¸‹å‚æ•°ç”¨äºsigprocmask()-- æ”¹å˜é˜»å¡ä¿¡å·é›†(å±è”½ç )ã€‚è¿™äº›å‚æ•°å¯ä»¥æ”¹å˜è¯¥å‡½æ•°çš„è¡Œä¸ºã€‚
 #define SIG_BLOCK 0		/* for blocking signals */
-// ÔÚ×èÈûĞÅºÅ¼¯ÖĞ¼ÓÉÏ¸ø¶¨µÄĞÅºÅ¼¯¡£
+// åœ¨é˜»å¡ä¿¡å·é›†ä¸­åŠ ä¸Šç»™å®šçš„ä¿¡å·é›†ã€‚
 #define SIG_UNBLOCK 1		/* for unblocking signals */
-// ´Ó×èÈûĞÅºÅ¼¯ÖĞÉ¾³ıÖ¸¶¨µÄĞÅºÅ¼¯¡£
+// ä»é˜»å¡ä¿¡å·é›†ä¸­åˆ é™¤æŒ‡å®šçš„ä¿¡å·é›†ã€‚
 #define SIG_SETMASK 2		/* for setting the signal mask */
-// ÉèÖÃ×èÈûĞÅºÅ¼¯£¨ĞÅºÅÆÁ±ÎÂë£©¡£
+// è®¾ç½®é˜»å¡ä¿¡å·é›†ï¼ˆä¿¡å·å±è”½ç ï¼‰ã€‚
 
 #define SIG_DFL ((void (*)(int))0)	/* default signal handling */
-// Ä¬ÈÏµÄĞÅºÅ´¦Àí³ÌĞò£¨ĞÅºÅ¾ä±ú£©¡£
+// é»˜è®¤çš„ä¿¡å·å¤„ç†ç¨‹åºï¼ˆä¿¡å·å¥æŸ„ï¼‰ã€‚
 #define SIG_IGN ((void (*)(int))1)	/* ignore signal */
-// ºöÂÔĞÅºÅµÄ´¦Àí³ÌĞò¡£
+// å¿½ç•¥ä¿¡å·çš„å¤„ç†ç¨‹åºã€‚
 
-// ÏÂÃæÊÇsigaction µÄÊı¾İ½á¹¹¡£
-// sa_handler ÊÇ¶ÔÓ¦Ä³ĞÅºÅÖ¸¶¨Òª²ÉÈ¡µÄĞĞ¶¯¡£¿ÉÒÔÊÇÉÏÃæµÄSIG_DFL£¬»òÕßÊÇSIG_IGN À´ºöÂÔ
-// ¸ÃĞÅºÅ£¬Ò²¿ÉÒÔÊÇÖ¸Ïò´¦Àí¸ÃĞÅºÅº¯ÊıµÄÒ»¸öÖ¸Õë¡£
-// sa_mask ¸ø³öÁË¶ÔĞÅºÅµÄÆÁ±ÎÂë£¬ÔÚĞÅºÅ³ÌĞòÖ´ĞĞÊ±½«×èÈû¶ÔÕâĞ©ĞÅºÅµÄ´¦Àí¡£
-// sa_flags Ö¸¶¨¸Ä±äĞÅºÅ´¦Àí¹ı³ÌµÄĞÅºÅ¼¯¡£ËüÊÇÓÉ37-39 ĞĞµÄÎ»±êÖ¾¶¨ÒåµÄ¡£
-// sa_restorer »Ö¸´¹ı³ÌÖ¸Õë£¬ÊÇÓÃÓÚ±£´æÔ­·µ»ØµÄ¹ı³ÌÖ¸Õë¡£
-// ÁíÍâ£¬ÒıÆğ´¥·¢ĞÅºÅ´¦ÀíµÄĞÅºÅÒ²½«±»×èÈû£¬³ı·ÇÊ¹ÓÃÁËSA_NOMASK ±êÖ¾¡£
+// ä¸‹é¢æ˜¯sigaction çš„æ•°æ®ç»“æ„ã€‚
+// sa_handler æ˜¯å¯¹åº”æŸä¿¡å·æŒ‡å®šè¦é‡‡å–çš„è¡ŒåŠ¨ã€‚å¯ä»¥æ˜¯ä¸Šé¢çš„SIG_DFLï¼Œæˆ–è€…æ˜¯SIG_IGN æ¥å¿½ç•¥
+// è¯¥ä¿¡å·ï¼Œä¹Ÿå¯ä»¥æ˜¯æŒ‡å‘å¤„ç†è¯¥ä¿¡å·å‡½æ•°çš„ä¸€ä¸ªæŒ‡é’ˆã€‚
+// sa_mask ç»™å‡ºäº†å¯¹ä¿¡å·çš„å±è”½ç ï¼Œåœ¨ä¿¡å·ç¨‹åºæ‰§è¡Œæ—¶å°†é˜»å¡å¯¹è¿™äº›ä¿¡å·çš„å¤„ç†ã€‚
+// sa_flags æŒ‡å®šæ”¹å˜ä¿¡å·å¤„ç†è¿‡ç¨‹çš„ä¿¡å·é›†ã€‚å®ƒæ˜¯ç”±37-39 è¡Œçš„ä½æ ‡å¿—å®šä¹‰çš„ã€‚
+// sa_restorer æ¢å¤è¿‡ç¨‹æŒ‡é’ˆï¼Œæ˜¯ç”¨äºä¿å­˜åŸè¿”å›çš„è¿‡ç¨‹æŒ‡é’ˆã€‚
+// å¦å¤–ï¼Œå¼•èµ·è§¦å‘ä¿¡å·å¤„ç†çš„ä¿¡å·ä¹Ÿå°†è¢«é˜»å¡ï¼Œé™¤éä½¿ç”¨äº†SA_NOMASK æ ‡å¿—ã€‚
 struct sigaction
 {
   void (*sa_handler) (int);
@@ -68,29 +68,29 @@ struct sigaction
   void (*sa_restorer) (void);
 };
 
-// ÎªĞÅºÅ_sig °²×°Ò»¸öĞÂµÄĞÅºÅ´¦Àí³ÌĞò£¨ĞÅºÅ¾ä±ú£©£¬Óësigaction()ÀàËÆ¡£
+// ä¸ºä¿¡å·_sig å®‰è£…ä¸€ä¸ªæ–°çš„ä¿¡å·å¤„ç†ç¨‹åºï¼ˆä¿¡å·å¥æŸ„ï¼‰ï¼Œä¸sigaction()ç±»ä¼¼ã€‚
 void (*signal (int _sig, void (*_func) (int))) (int);
-// Ïòµ±Ç°½ø³Ì·¢ËÍÒ»¸öĞÅºÅ¡£Æä×÷ÓÃµÈ¼ÛÓÚkill(getpid(),sig)¡£
+// å‘å½“å‰è¿›ç¨‹å‘é€ä¸€ä¸ªä¿¡å·ã€‚å…¶ä½œç”¨ç­‰ä»·äºkill(getpid(),sig)ã€‚
 int raise (int sig);
-// ¿ÉÓÃÓÚÏòÈÎºÎ½ø³Ì×é»ò½ø³Ì·¢ËÍÈÎºÎĞÅºÅ¡£
+// å¯ç”¨äºå‘ä»»ä½•è¿›ç¨‹ç»„æˆ–è¿›ç¨‹å‘é€ä»»ä½•ä¿¡å·ã€‚
 int kill (pid_t pid, int sig);
-// ÏòĞÅºÅ¼¯ÖĞÌí¼ÓĞÅºÅ¡£
+// å‘ä¿¡å·é›†ä¸­æ·»åŠ ä¿¡å·ã€‚
 int sigaddset (sigset_t * mask, int signo);
-// ´ÓĞÅºÅ¼¯ÖĞÈ¥³ıÖ¸¶¨µÄĞÅºÅ¡£
+// ä»ä¿¡å·é›†ä¸­å»é™¤æŒ‡å®šçš„ä¿¡å·ã€‚
 int sigdelset (sigset_t * mask, int signo);
-// ´ÓĞÅºÅ¼¯ÖĞÇå³ıÖ¸¶¨ĞÅºÅ¼¯¡£
+// ä»ä¿¡å·é›†ä¸­æ¸…é™¤æŒ‡å®šä¿¡å·é›†ã€‚
 int sigemptyset (sigset_t * mask);
-// ÏòĞÅºÅ¼¯ÖĞÖÃÈëËùÓĞĞÅºÅ¡£
+// å‘ä¿¡å·é›†ä¸­ç½®å…¥æ‰€æœ‰ä¿¡å·ã€‚
 int sigfillset (sigset_t * mask);
-// ÅĞ¶ÏÒ»¸öĞÅºÅÊÇ·ñÊÇĞÅºÅ¼¯ÖĞµÄ¡£1 -- ÊÇ£¬ 0 -- ²»ÊÇ£¬ -1 -- ³ö´í¡£
+// åˆ¤æ–­ä¸€ä¸ªä¿¡å·æ˜¯å¦æ˜¯ä¿¡å·é›†ä¸­çš„ã€‚1 -- æ˜¯ï¼Œ 0 -- ä¸æ˜¯ï¼Œ -1 -- å‡ºé”™ã€‚
 int sigismember (sigset_t * mask, int signo);	/* 1 - is, 0 - not, -1 error */
-// ¶Ôset ÖĞµÄĞÅºÅ½øĞĞ¼ì²â£¬¿´ÊÇ·ñÓĞ¹ÒÆğµÄĞÅºÅ¡£
+// å¯¹set ä¸­çš„ä¿¡å·è¿›è¡Œæ£€æµ‹ï¼Œçœ‹æ˜¯å¦æœ‰æŒ‚èµ·çš„ä¿¡å·ã€‚
 int sigpending (sigset_t * set);
-// ¸Ä±äÄ¿Ç°µÄ±»×èÈûĞÅºÅ¼¯£¨ĞÅºÅÆÁ±ÎÂë£©¡£
+// æ”¹å˜ç›®å‰çš„è¢«é˜»å¡ä¿¡å·é›†ï¼ˆä¿¡å·å±è”½ç ï¼‰ã€‚
 int sigprocmask (int how, sigset_t * set, sigset_t * oldset);
-// ÓÃsigmask ÁÙÊ±Ìæ»»½ø³ÌµÄĞÅºÅÆÁ±ÎÂë,È»ºóÔİÍ£¸Ã½ø³ÌÖ±µ½ÊÕµ½Ò»¸öĞÅºÅ¡£
+// ç”¨sigmask ä¸´æ—¶æ›¿æ¢è¿›ç¨‹çš„ä¿¡å·å±è”½ç ,ç„¶åæš‚åœè¯¥è¿›ç¨‹ç›´åˆ°æ”¶åˆ°ä¸€ä¸ªä¿¡å·ã€‚
 int sigsuspend (sigset_t * sigmask);
-// ÓÃÓÚ¸Ä±ä½ø³ÌÔÚÊÕµ½Ö¸¶¨ĞÅºÅÊ±Ëù²ÉÈ¡µÄĞĞ¶¯¡£
+// ç”¨äºæ”¹å˜è¿›ç¨‹åœ¨æ”¶åˆ°æŒ‡å®šä¿¡å·æ—¶æ‰€é‡‡å–çš„è¡ŒåŠ¨ã€‚
 int sigaction (int sig, struct sigaction *act, struct sigaction *oldact);
 
 #endif /* _SIGNAL_H */

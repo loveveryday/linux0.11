@@ -5,58 +5,58 @@
 
 struct stat
 {
-  dev_t st_dev;			// º¬ÓĞÎÄ¼şµÄÉè±¸ºÅ¡£
-  ino_t st_ino;			// ÎÄ¼şi ½ÚµãºÅ¡£
-  umode_t st_mode;		// ÎÄ¼şÊôĞÔ£¨¼ûÏÂÃæ£©¡£
-  nlink_t st_nlink;		// Ö¸¶¨ÎÄ¼şµÄÁ¬½ÓÊı¡£
-  uid_t st_uid;			// ÎÄ¼şµÄÓÃ»§(±êÊ¶)ºÅ¡£
-  gid_t st_gid;			// ÎÄ¼şµÄ×éºÅ¡£
-  dev_t st_rdev;		// Éè±¸ºÅ(Èç¹ûÎÄ¼şÊÇÌØÊâµÄ×Ö·ûÎÄ¼ş»ò¿éÎÄ¼ş)¡£
-  off_t st_size;		// ÎÄ¼ş´óĞ¡£¨×Ö½ÚÊı£©£¨Èç¹ûÎÄ¼şÊÇ³£¹æÎÄ¼ş£©¡£
-  time_t st_atime;		// ÉÏ´Î£¨×îºó£©·ÃÎÊÊ±¼ä¡£
-  time_t st_mtime;		// ×îºóĞŞ¸ÄÊ±¼ä¡£
-  time_t st_ctime;		// ×îºó½ÚµãĞŞ¸ÄÊ±¼ä¡£
+  dev_t st_dev;			// å«æœ‰æ–‡ä»¶çš„è®¾å¤‡å·ã€‚
+  ino_t st_ino;			// æ–‡ä»¶i èŠ‚ç‚¹å·ã€‚
+  umode_t st_mode;		// æ–‡ä»¶å±æ€§ï¼ˆè§ä¸‹é¢ï¼‰ã€‚
+  nlink_t st_nlink;		// æŒ‡å®šæ–‡ä»¶çš„è¿æ¥æ•°ã€‚
+  uid_t st_uid;			// æ–‡ä»¶çš„ç”¨æˆ·(æ ‡è¯†)å·ã€‚
+  gid_t st_gid;			// æ–‡ä»¶çš„ç»„å·ã€‚
+  dev_t st_rdev;		// è®¾å¤‡å·(å¦‚æœæ–‡ä»¶æ˜¯ç‰¹æ®Šçš„å­—ç¬¦æ–‡ä»¶æˆ–å—æ–‡ä»¶)ã€‚
+  off_t st_size;		// æ–‡ä»¶å¤§å°ï¼ˆå­—èŠ‚æ•°ï¼‰ï¼ˆå¦‚æœæ–‡ä»¶æ˜¯å¸¸è§„æ–‡ä»¶ï¼‰ã€‚
+  time_t st_atime;		// ä¸Šæ¬¡ï¼ˆæœ€åï¼‰è®¿é—®æ—¶é—´ã€‚
+  time_t st_mtime;		// æœ€åä¿®æ”¹æ—¶é—´ã€‚
+  time_t st_ctime;		// æœ€åèŠ‚ç‚¹ä¿®æ”¹æ—¶é—´ã€‚
 };
 
-// ÒÔÏÂÕâĞ©ÊÇst_mode ÖµµÄ·ûºÅÃû³Æ¡£
-// ÎÄ¼şÀàĞÍ£º
-#define S_IFMT 00170000		// ÎÄ¼şÀàĞÍ£¨8 ½øÖÆ±íÊ¾£©¡£
-#define S_IFREG 0100000		// ³£¹æÎÄ¼ş¡£
-#define S_IFBLK 0060000		// ¿éÌØÊâ£¨Éè±¸£©ÎÄ¼ş£¬Èç´ÅÅÌdev/fd0¡£
-#define S_IFDIR 0040000		// Ä¿Â¼ÎÄ¼ş¡£
-#define S_IFCHR 0020000		// ×Ö·ûÉè±¸ÎÄ¼ş¡£
-#define S_IFIFO 0010000		// FIFO ÌØÊâÎÄ¼ş¡£
-// ÎÄ¼şÊôĞÔÎ»£º
-#define S_ISUID 0004000		// Ö´ĞĞÊ±ÉèÖÃÓÃ»§ID£¨set-user-ID£©¡£
-#define S_ISGID 0002000		// Ö´ĞĞÊ±ÉèÖÃ×éID¡£
-#define S_ISVTX 0001000		// ¶ÔÓÚÄ¿Â¼£¬ÊÜÏŞÉ¾³ı±êÖ¾¡£
+// ä»¥ä¸‹è¿™äº›æ˜¯st_mode å€¼çš„ç¬¦å·åç§°ã€‚
+// æ–‡ä»¶ç±»å‹ï¼š
+#define S_IFMT 00170000		// æ–‡ä»¶ç±»å‹ï¼ˆ8 è¿›åˆ¶è¡¨ç¤ºï¼‰ã€‚
+#define S_IFREG 0100000		// å¸¸è§„æ–‡ä»¶ã€‚
+#define S_IFBLK 0060000		// å—ç‰¹æ®Šï¼ˆè®¾å¤‡ï¼‰æ–‡ä»¶ï¼Œå¦‚ç£ç›˜dev/fd0ã€‚
+#define S_IFDIR 0040000		// ç›®å½•æ–‡ä»¶ã€‚
+#define S_IFCHR 0020000		// å­—ç¬¦è®¾å¤‡æ–‡ä»¶ã€‚
+#define S_IFIFO 0010000		// FIFO ç‰¹æ®Šæ–‡ä»¶ã€‚
+// æ–‡ä»¶å±æ€§ä½ï¼š
+#define S_ISUID 0004000		// æ‰§è¡Œæ—¶è®¾ç½®ç”¨æˆ·IDï¼ˆset-user-IDï¼‰ã€‚
+#define S_ISGID 0002000		// æ‰§è¡Œæ—¶è®¾ç½®ç»„IDã€‚
+#define S_ISVTX 0001000		// å¯¹äºç›®å½•ï¼Œå—é™åˆ é™¤æ ‡å¿—ã€‚
 
-#define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)	// ²âÊÔÊÇ·ñ³£¹æÎÄ¼ş¡£
-#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)	// ÊÇ·ñÄ¿Â¼ÎÄ¼ş¡£
-#define S_ISCHR(m) (((m) & S_IFMT) == S_IFCHR)	// ÊÇ·ñ×Ö·ûÉè±¸ÎÄ¼ş¡£
-#define S_ISBLK(m) (((m) & S_IFMT) == S_IFBLK)	// ÊÇ·ñ¿éÉè±¸ÎÄ¼ş¡£
-#define S_ISFIFO(m) (((m) & S_IFMT) == S_IFIFO)	// ÊÇ·ñFIFO ÌØÊâÎÄ¼ş¡£
+#define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)	// æµ‹è¯•æ˜¯å¦å¸¸è§„æ–‡ä»¶ã€‚
+#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)	// æ˜¯å¦ç›®å½•æ–‡ä»¶ã€‚
+#define S_ISCHR(m) (((m) & S_IFMT) == S_IFCHR)	// æ˜¯å¦å­—ç¬¦è®¾å¤‡æ–‡ä»¶ã€‚
+#define S_ISBLK(m) (((m) & S_IFMT) == S_IFBLK)	// æ˜¯å¦å—è®¾å¤‡æ–‡ä»¶ã€‚
+#define S_ISFIFO(m) (((m) & S_IFMT) == S_IFIFO)	// æ˜¯å¦FIFO ç‰¹æ®Šæ–‡ä»¶ã€‚
 
-#define S_IRWXU 00700		// ËŞÖ÷¿ÉÒÔ¶Á¡¢Ğ´¡¢Ö´ĞĞ/ËÑË÷¡£
-#define S_IRUSR 00400		// ËŞÖ÷¶ÁĞí¿É¡£
-#define S_IWUSR 00200		// ËŞÖ÷Ğ´Ğí¿É¡£
-#define S_IXUSR 00100		// ËŞÖ÷Ö´ĞĞ/ËÑË÷Ğí¿É¡£
+#define S_IRWXU 00700		// å®¿ä¸»å¯ä»¥è¯»ã€å†™ã€æ‰§è¡Œ/æœç´¢ã€‚
+#define S_IRUSR 00400		// å®¿ä¸»è¯»è®¸å¯ã€‚
+#define S_IWUSR 00200		// å®¿ä¸»å†™è®¸å¯ã€‚
+#define S_IXUSR 00100		// å®¿ä¸»æ‰§è¡Œ/æœç´¢è®¸å¯ã€‚
 
-#define S_IRWXG 00070		// ×é³ÉÔ±¿ÉÒÔ¶Á¡¢Ğ´¡¢Ö´ĞĞ/ËÑË÷¡£
-#define S_IRGRP 00040		// ×é³ÉÔ±¶ÁĞí¿É¡£
-#define S_IWGRP 00020		// ×é³ÉÔ±Ğ´Ğí¿É¡£
-#define S_IXGRP 00010		// ×é³ÉÔ±Ö´ĞĞ/ËÑË÷Ğí¿É¡£
+#define S_IRWXG 00070		// ç»„æˆå‘˜å¯ä»¥è¯»ã€å†™ã€æ‰§è¡Œ/æœç´¢ã€‚
+#define S_IRGRP 00040		// ç»„æˆå‘˜è¯»è®¸å¯ã€‚
+#define S_IWGRP 00020		// ç»„æˆå‘˜å†™è®¸å¯ã€‚
+#define S_IXGRP 00010		// ç»„æˆå‘˜æ‰§è¡Œ/æœç´¢è®¸å¯ã€‚
 
-#define S_IRWXO 00007		// ÆäËûÈË¶Á¡¢Ğ´¡¢Ö´ĞĞ/ËÑË÷Ğí¿É¡£
-#define S_IROTH 00004		// ÆäËûÈË¶ÁĞí¿É¡£
-#define S_IWOTH 00002		// ÆäËûÈËĞ´Ğí¿É¡£
-#define S_IXOTH 00001		// ÆäËûÈËÖ´ĞĞ/ËÑË÷Ğí¿É¡£
+#define S_IRWXO 00007		// å…¶ä»–äººè¯»ã€å†™ã€æ‰§è¡Œ/æœç´¢è®¸å¯ã€‚
+#define S_IROTH 00004		// å…¶ä»–äººè¯»è®¸å¯ã€‚
+#define S_IWOTH 00002		// å…¶ä»–äººå†™è®¸å¯ã€‚
+#define S_IXOTH 00001		// å…¶ä»–äººæ‰§è¡Œ/æœç´¢è®¸å¯ã€‚
 
-extern int chmod (const char *_path, mode_t mode);	// ĞŞ¸ÄÎÄ¼şÊôĞÔ¡£
-extern int fstat (int fildes, struct stat *stat_buf);	// È¡Ö¸¶¨ÎÄ¼ş¾ä±úµÄÎÄ¼ş×´Ì¬ĞÅÏ¢¡£
-extern int mkdir (const char *_path, mode_t mode);	// ´´½¨Ä¿Â¼¡£
-extern int mkfifo (const char *_path, mode_t mode);	// ´´½¨¹ÜµÀÎÄ¼ş¡£
-extern int stat (const char *filename, struct stat *stat_buf);	// È¡Ö¸¶¨ÎÄ¼şÃûµÄÎÄ¼ş×´Ì¬ĞÅÏ¢¡£
-extern mode_t umask (mode_t mask);	// ÉèÖÃÊôĞÔÆÁ±ÎÂë¡£
+extern int chmod (const char *_path, mode_t mode);	// ä¿®æ”¹æ–‡ä»¶å±æ€§ã€‚
+extern int fstat (int fildes, struct stat *stat_buf);	// å–æŒ‡å®šæ–‡ä»¶å¥æŸ„çš„æ–‡ä»¶çŠ¶æ€ä¿¡æ¯ã€‚
+extern int mkdir (const char *_path, mode_t mode);	// åˆ›å»ºç›®å½•ã€‚
+extern int mkfifo (const char *_path, mode_t mode);	// åˆ›å»ºç®¡é“æ–‡ä»¶ã€‚
+extern int stat (const char *filename, struct stat *stat_buf);	// å–æŒ‡å®šæ–‡ä»¶åçš„æ–‡ä»¶çŠ¶æ€ä¿¡æ¯ã€‚
+extern mode_t umask (mode_t mask);	// è®¾ç½®å±æ€§å±è”½ç ã€‚
 
 #endif

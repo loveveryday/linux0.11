@@ -5,7 +5,7 @@
  */
 #include <set_seg.h>
 
-// ÎÄ¼þÏµÍ³Í·ÎÄ¼þ¡£¶¨ÒåÎÄ¼þ±í½á¹¹£¨file,buffer_head,m_inode µÈ£©¡£
+// æ–‡ä»¶ç³»ç»Ÿå¤´æ–‡ä»¶ã€‚å®šä¹‰æ–‡ä»¶è¡¨ç»“æž„ï¼ˆfile,buffer_head,m_inode ç­‰ï¼‰ã€‚
 #include <linux/fs.h>
 
-struct file file_table[NR_FILE] = {0};// ÎÄ¼þ±íÊý×é(64 Ïî)¡£
+struct file file_table[NR_FILE] = {0};// æ–‡ä»¶è¡¨æ•°ç»„(64 é¡¹)ã€‚

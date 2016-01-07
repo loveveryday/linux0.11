@@ -2,77 +2,77 @@
 #define _UNISTD_H
 
 /* ok, this may be a joke, but I'm working on it */
-/* ok, ��Ҳ���Ǹ���Ц�������������ִ��� */
-// ������ų���ָ������IEEE ��׼1003.1 ʵ�ֵİ汾�ţ���һ������ֵ��
+/* ok, 这也许是个玩笑，但我正在着手处理 */
+// 下面符号常数指出符合IEEE 标准1003.1 实现的版本号，是一个整数值。
 #define _POSIX_VERSION 198808L
 
-// chown()��fchown()��ʹ�������ڽ��̵�Ȩ�ޡ�/* ֻ�г����û�����ִ��chown������..��*/
+// chown()和fchown()的使用受限于进程的权限。/* 只有超级用户可以执行chown（我想..）*/
 #define _POSIX_CHOWN_RESTRICTED	/* only root can do a chown (I think..) */
-// ����(NAME_MAX)��·�������������󣬶������Զ��ضϡ�/* ·�������ضϣ������뿴�ں˴��룩*/
+// 长于(NAME_MAX)的路径名将产生错误，而不会自动截断。/* 路径名不截断（但是请看内核代码）*/
 #define _POSIX_NO_TRUNC		/* no pathname truncation (but see in kernel) */
-// ����������Ž�������ַ�ֵ����ֵ����ֹ�ն˶���Ĵ�����/* ��ֹ��^C �������ַ� */
+// 下面这个符号将定义成字符值，该值将禁止终端对其的处理。/* 禁止象^C 这样的字符 */
 #define _POSIX_VDISABLE '\0'	/* character to disable things like ^C */
-// ÿ�����̶���һ�����set-user-ID ��һ�����set-group-ID�� /* ���ǽ����ֶԴ˽��д��� */
+// 每个进程都有一保存的set-user-ID 和一保存的set-group-ID。 /* 我们将着手对此进行处理 */
 /*#define _POSIX_SAVED_IDS *//* we'll get to this yet */
-// ϵͳʵ��֧����ҵ���ơ� /* ���ǻ�û��֧�������׼��ϣ���ܿ���� */
+// 系统实现支持作业控制。 /* 我们还没有支持这项标准，希望很快就行 */
 /*#define _POSIX_JOB_CONTROL *//* we aren't there quite yet. Soon hopefully */
 
-#define STDIN_FILENO 0		// ��׼�����ļ���������������š�
-#define STDOUT_FILENO 1		// ��׼����ļ�����š�
-#define STDERR_FILENO 2		// ��׼�����ļ�����š�
+#define STDIN_FILENO 0		// 标准输入文件句柄（描述符）号。
+#define STDOUT_FILENO 1		// 标准输出文件句柄号。
+#define STDERR_FILENO 2		// 标准出错文件句柄号。
 
 #ifndef NULL
-#define NULL 0	// �����ָ�롣
+#define NULL 0	// 定义空指针。
 #endif
 
-/* access *//* �ļ����� */
-// ���¶���ķ��ų�������access()������
-#define F_OK 0			// ����ļ��Ƿ���ڡ�
-#define X_OK 1			// ����Ƿ��ִ�У���������
-#define W_OK 2			// ����Ƿ��д��
-#define R_OK 4			// ����Ƿ�ɶ���
+/* access *//* 文件访问 */
+// 以下定义的符号常数用于access()函数。
+#define F_OK 0			// 检测文件是否存在。
+#define X_OK 1			// 检测是否可执行（搜索）。
+#define W_OK 2			// 检测是否可写。
+#define R_OK 4			// 检测是否可读。
 
-/* lseek *//* �ļ�ָ���ض�λ */
-// ���·��ų�������lseek()��fcntl()������
-#define SEEK_SET 0		// ���ļ���дָ������Ϊƫ��ֵ��
-#define SEEK_CUR 1		// ���ļ���дָ������Ϊ��ǰֵ����ƫ��ֵ��
-#define SEEK_END 2		// ���ļ���дָ������Ϊ�ļ����ȼ���ƫ��ֵ��
+/* lseek *//* 文件指针重定位 */
+// 以下符号常数用于lseek()和fcntl()函数。
+#define SEEK_SET 0		// 将文件读写指针设置为偏移值。
+#define SEEK_CUR 1		// 将文件读写指针设置为当前值加上偏移值。
+#define SEEK_END 2		// 将文件读写指针设置为文件长度加上偏移值。
 
 /* _SC stands for System Configuration. We don't use them much */
-/* _SC ��ʾϵͳ���á����Ǻ���ʹ�� */
-// ����ķ��ų�������sysconf()������
-#define _SC_ARG_MAX 1		// ����������
-#define _SC_CHILD_MAX 2		// �ӽ����������
-#define _SC_CLOCKS_PER_SEC 3	// ÿ��δ�����
-#define _SC_NGROUPS_MAX 4	// ���������
-#define _SC_OPEN_MAX 5		// �����ļ�����
-#define _SC_JOB_CONTROL 6	// ��ҵ���ơ�
-#define _SC_SAVED_IDS 7		// ����ı�ʶ����
-#define _SC_VERSION 8		// �汾��
+/* _SC 表示系统配置。我们很少使用 */
+// 下面的符号常数用于sysconf()函数。
+#define _SC_ARG_MAX 1		// 最大变量数。
+#define _SC_CHILD_MAX 2		// 子进程最大数。
+#define _SC_CLOCKS_PER_SEC 3	// 每秒滴答数。
+#define _SC_NGROUPS_MAX 4	// 最大组数。
+#define _SC_OPEN_MAX 5		// 最大打开文件数。
+#define _SC_JOB_CONTROL 6	// 作业控制。
+#define _SC_SAVED_IDS 7		// 保存的标识符。
+#define _SC_VERSION 8		// 版本。
 
 /* more (possibly) configurable things - now pathnames */
-/* ����ģ����ܵģ������ò��� - ��������·���� */
-// ����ķ��ų�������pathconf()������
-#define _PC_LINK_MAX 1		// �����������
-#define _PC_MAX_CANON 2		// ��󳣹��ļ�����
-#define _PC_MAX_INPUT 3		// ������볤�ȡ�
-#define _PC_NAME_MAX 4		// ������󳤶ȡ�
-#define _PC_PATH_MAX 5		// ·����󳤶ȡ�
-#define _PC_PIPE_BUF 6		// �ܵ������С��
-#define _PC_NO_TRUNC 7		// �ļ������ضϡ�
+/* 更多的（可能的）可配置参数 - 现在用于路径名 */
+// 下面的符号常数用于pathconf()函数。
+#define _PC_LINK_MAX 1		// 连接最大数。
+#define _PC_MAX_CANON 2		// 最大常规文件数。
+#define _PC_MAX_INPUT 3		// 最大输入长度。
+#define _PC_NAME_MAX 4		// 名称最大长度。
+#define _PC_PATH_MAX 5		// 路径最大长度。
+#define _PC_PIPE_BUF 6		// 管道缓冲大小。
+#define _PC_NO_TRUNC 7		// 文件名不截断。
 #define _PC_VDISABLE 8		//
-#define _PC_CHOWN_RESTRICTED 9	// �ı��������ޡ�
+#define _PC_CHOWN_RESTRICTED 9	// 改变宿主受限。
 
-#include <sys/stat.h>		// �ļ�״̬ͷ�ļ��������ļ����ļ�ϵͳ״̬�ṹstat{}�ͳ�����
-#include <sys/times.h>		// �����˽���������ʱ��ṹtms �Լ�times()����ԭ�͡�
-#include <sys/utsname.h>	// ϵͳ���ƽṹͷ�ļ���
-#include <utime.h>		// �û�ʱ��ͷ�ļ��������˷��ʺ��޸�ʱ��ṹ�Լ�utime()ԭ�͡�
+#include <sys/stat.h>		// 文件状态头文件。含有文件或文件系统状态结构stat{}和常量。
+#include <sys/times.h>		// 定义了进程中运行时间结构tms 以及times()函数原型。
+#include <sys/utsname.h>	// 系统名称结构头文件。
+#include <utime.h>		// 用户时间头文件。定义了访问和修改时间结构以及utime()原型。
 
 #ifdef __LIBRARY__
 
-// �������ں�ʵ�ֵ�ϵͳ���÷��ų�����������Ϊϵͳ���ú������е�����ֵ��( include/linux/sys.h )
+// 以下是内核实现的系统调用符号常数，用于作为系统调用函数表中的索引值。( include/linux/sys.h )
 #define __NR_setup 0		/* used only by init, to get system going */
-/* __NR_setup �����ڳ�ʼ����������ϵͳ */
+/* __NR_setup 仅用于初始化，以启动系统 */
 #define __NR_exit 1
 #define __NR_fork 2
 #define __NR_read 3
@@ -145,23 +145,23 @@
 #define __NR_setreuid 70
 #define __NR_setregid 71
 
-// ���¶���ϵͳ����Ƕ��ʽ���꺯����
-// ����������ϵͳ���ú꺯����type name(void)��
-// %0 - eax(__res)��%1 - eax(__NR_##name)������name ��ϵͳ���õ����ƣ��� __NR_ ����γ�����
-// ��ϵͳ���÷��ų������Ӷ�������ϵͳ���ñ��к���ָ��Ѱַ��
-// ���أ��������ֵ���ڵ���0���򷵻ظ�ֵ�������ó�����errno��������-1��
+// 以下定义系统调用嵌入式汇编宏函数。
+// 不带参数的系统调用宏函数。type name(void)。
+// %0 - eax(__res)，%1 - eax(__NR_##name)。其中name 是系统调用的名称，与 __NR_ 组合形成上面
+// 的系统调用符号常数，从而用来对系统调用表中函数指针寻址。
+// 返回：如果返回值大于等于0，则返回该值，否则置出错号errno，并返回-1。
 #define _syscall0(type,name) \
 type name(void) \
 { \
 	volatile long __res; \
-	_asm {  /* ����Ϊϵͳ�жϵ��ú�__NR_name*/\
+	_asm {  /* 输入为系统中断调用号__NR_name*/\
 		_asm mov eax,__NR_##name\
-		_asm int 80h /* ����ϵͳ�ж�0x80��*/\
-		_asm mov __res,eax /* ����ֵ??eax(__res)*/\
+		_asm int 80h /* 调用系统中断0x80。*/\
+		_asm mov __res,eax /* 返回值??eax(__res)*/\
 	} \
-    if (__res >= 0) 		/* �������ֵ>=0����ֱ�ӷ��ظ�ֵ��*/\
+    if (__res >= 0) 		/* 如果返回值>=0，则直接返回该值。*/\
 		return (type) __res; \
-	errno = -__res; 	/* �����ó����ţ�������-1��*/\
+	errno = -__res; 	/* 否则置出错号，并返回-1。*/\
 	return -1; \
 }
 /*
@@ -178,17 +178,17 @@ errno = -__res; \
 return -1; \
 }*/
 
-// ��1 ��������ϵͳ���ú꺯����type name(atype a)
-// %0 - eax(__res)��%1 - eax(__NR_name)��%2 - ebx(a)��
+// 有1 个参数的系统调用宏函数。type name(atype a)
+// %0 - eax(__res)，%1 - eax(__NR_name)，%2 - ebx(a)。
 #define _syscall1(type,name,atype,a) \
 type name(atype a) \
 { \
 	volatile long __res; \
-	_asm {  /* ����Ϊϵͳ�жϵ��ú�__NR_name*/\
+	_asm {  /* 输入为系统中断调用号__NR_name*/\
 		_asm mov eax,__NR_##name \
 		_asm mov ebx,a \
-		_asm int 80h /* ����ϵͳ�ж�0x80��*/\
-		_asm mov __res,eax /* ����ֵ->eax(__res)*/\
+		_asm int 80h /* 调用系统中断0x80。*/\
+		_asm mov __res,eax /* 返回值->eax(__res)*/\
 	} \
 	if (__res >= 0) \
 		return (type) __res; \
@@ -208,22 +208,22 @@ errno = -__res; \
 return -1; \
 }*/
 
-// ��2 ��������ϵͳ���ú꺯����type name(atype a, btype b)
-// %0 - eax(__res)��%1 - eax(__NR_name)��%2 - ebx(a)��%3 - ecx(b)��
+// 有2 个参数的系统调用宏函数。type name(atype a, btype b)
+// %0 - eax(__res)，%1 - eax(__NR_name)，%2 - ebx(a)，%3 - ecx(b)。
 #define _syscall2(type,name,atype,a,btype,b) \
 type name(atype a,btype b) \
 { \
 	volatile long __res; \
-	_asm {  /* ����Ϊϵͳ�жϵ��ú�__NR_name*/\
+	_asm {  /* 输入为系统中断调用号__NR_name*/\
 		_asm mov eax,__NR_##name \
 		_asm mov ebx,a \
 		_asm mov ecx,b \
-		_asm int 80h /* ����ϵͳ�ж�0x80��*/\
-		_asm mov __res,eax /* ����ֵ??eax(__res)*/\
+		_asm int 80h /* 调用系统中断0x80。*/\
+		_asm mov __res,eax /* 返回值??eax(__res)*/\
 	} \
-    if (__res >= 0) 		/* �������ֵ>=0����ֱ�ӷ��ظ�ֵ��*/\
+    if (__res >= 0) 		/* 如果返回值>=0，则直接返回该值。*/\
 		return (type) __res; \
-	errno = -__res; 	/* �����ó����ţ�������-1��*/\
+	errno = -__res; 	/* 否则置出错号，并返回-1。*/\
 	return -1; \
 }
 /*#define _syscall2(type,name,atype,a,btype,b) \
@@ -239,23 +239,23 @@ errno = -__res; \
 return -1; \
 }*/
 
-// ��3 ��������ϵͳ���ú꺯����type name(atype a, btype b, ctype c)
-// %0 - eax(__res)��%1 - eax(__NR_name)��%2 - ebx(a)��%3 - ecx(b)��%4 - edx(c)��
+// 有3 个参数的系统调用宏函数。type name(atype a, btype b, ctype c)
+// %0 - eax(__res)，%1 - eax(__NR_name)，%2 - ebx(a)，%3 - ecx(b)，%4 - edx(c)。
 #define _syscall3(type,name,atype,a,btype,b,ctype,c) \
 type name(atype a,btype b,ctype c) \
 { \
 	volatile long __res; \
-	_asm {  /* ����Ϊϵͳ�жϵ��ú�__NR_name*/\
+	_asm {  /* 输入为系统中断调用号__NR_name*/\
 		_asm mov eax,__NR_##name \
 		_asm mov ebx,a \
 		_asm mov ecx,b \
 		_asm mov edx,c \
-		_asm int 80h /* ����ϵͳ�ж�0x80��*/\
-		_asm mov __res,eax /* ����ֵ??eax(__res)*/\
+		_asm int 80h /* 调用系统中断0x80。*/\
+		_asm mov __res,eax /* 返回值??eax(__res)*/\
 	} \
-    if (__res >= 0) 		/* �������ֵ>=0����ֱ�ӷ��ظ�ֵ��*/\
+    if (__res >= 0) 		/* 如果返回值>=0，则直接返回该值。*/\
 		return (type) __res; \
-	errno = -__res; 	/* �����ó����ţ�������-1��*/\
+	errno = -__res; 	/* 否则置出错号，并返回-1。*/\
 	return -1; \
 }
 /*#define _syscall3(type,name,atype,a,btype,b,ctype,c) \
@@ -273,9 +273,9 @@ return -1; \
 
 #endif /* __LIBRARY__ */
 
-extern int errno;		// �����ţ�ȫ�ֱ�����
+extern int errno;		// 出错号，全局变量。
 
-// ��Ӧ��ϵͳ���õĺ���ԭ�Ͷ��塣
+// 对应各系统调用的函数原型定义。
 	int access(const char * filename, mode_t mode);
 	int acct(const char * filename);
 	int alarm(int sec);

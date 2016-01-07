@@ -6,11 +6,11 @@
 #include <set_seg.h>
 
 #define __LIBRARY__
-// Linux ±ê×¼Í·ÎÄ¼þ¡£¶¨ÒåÁË¸÷ÖÖ·ûºÅ³£ÊýºÍÀàÐÍ£¬²¢ÉêÃ÷ÁË¸÷ÖÖº¯Êý¡£
-// Èç¶¨ÒåÁË__LIBRARY__£¬Ôò»¹°üÀ¨ÏµÍ³µ÷ÓÃºÅºÍÄÚÇ¶»ã±à_syscall0()µÈ¡£
+// Linux æ ‡å‡†å¤´æ–‡ä»¶ã€‚å®šä¹‰äº†å„ç§ç¬¦å·å¸¸æ•°å’Œç±»åž‹ï¼Œå¹¶ç”³æ˜Žäº†å„ç§å‡½æ•°ã€‚
+// å¦‚å®šä¹‰äº†__LIBRARY__ï¼Œåˆ™è¿˜åŒ…æ‹¬ç³»ç»Ÿè°ƒç”¨å·å’Œå†…åµŒæ±‡ç¼–_syscall0()ç­‰ã€‚
 #include <unistd.h>
 
-//// ¸´ÖÆÎÄ¼þÃèÊö·ûº¯Êý¡£
-// ÏÂÃæ¸Ãµ÷ÓÃºêº¯Êý¶ÔÓ¦£ºint dup(int fd)¡£Ö±½Óµ÷ÓÃÁËÏµÍ³ÖÐ¶Ïint 0x80£¬²ÎÊýÊÇ__NR_dup¡£
-// ÆäÖÐfd ÊÇÎÄ¼þÃèÊö·û¡£
+//// å¤åˆ¶æ–‡ä»¶æè¿°ç¬¦å‡½æ•°ã€‚
+// ä¸‹é¢è¯¥è°ƒç”¨å®å‡½æ•°å¯¹åº”ï¼šint dup(int fd)ã€‚ç›´æŽ¥è°ƒç”¨äº†ç³»ç»Ÿä¸­æ–­int 0x80ï¼Œå‚æ•°æ˜¯__NR_dupã€‚
+// å…¶ä¸­fd æ˜¯æ–‡ä»¶æè¿°ç¬¦ã€‚
 _syscall1(int,dup,int,fd)

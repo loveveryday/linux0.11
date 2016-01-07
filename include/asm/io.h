@@ -1,5 +1,5 @@
-//// Ó²¼ş¶Ë¿Ú×Ö½ÚÊä³öº¯Êı¡£
-// ²ÎÊı£ºvalue - ÓûÊä³ö×Ö½Ú£»port - ¶Ë¿Ú¡£
+//// ç¡¬ä»¶ç«¯å£å­—èŠ‚è¾“å‡ºå‡½æ•°ã€‚
+// å‚æ•°ï¼švalue - æ¬²è¾“å‡ºå­—èŠ‚ï¼›port - ç«¯å£ã€‚
 #define outb(value,port) _outb((unsigned char)(value),(unsigned short)(port))
 void _inline _outb(unsigned char value,unsigned short port) //passed
 {
@@ -10,8 +10,8 @@ void _inline _outb(unsigned char value,unsigned short port) //passed
 //__asm__ ( "outb %%al,%%dx":: "a" (value), "d" (port))
 
 
-//// Ó²¼ş¶Ë¿Ú×Ö½ÚÊäÈëº¯Êı¡£
-// ²ÎÊı£ºport - ¶Ë¿Ú¡£·µ»Ø¶ÁÈ¡µÄ×Ö½Ú¡£
+//// ç¡¬ä»¶ç«¯å£å­—èŠ‚è¾“å…¥å‡½æ•°ã€‚
+// å‚æ•°ï¼šport - ç«¯å£ã€‚è¿”å›è¯»å–çš„å­—èŠ‚ã€‚
 #define inb(port) _inb((unsigned short)(port))
 unsigned char _inline _inb(unsigned short port) 
 { 
@@ -27,8 +27,8 @@ __asm__ volatile ( "inb %%dx,%%al": "=a" (_v): "d" (port)); \
 _v; \
 })*/
 
-//// ´øÑÓ³ÙµÄÓ²¼ş¶Ë¿Ú×Ö½ÚÊä³öº¯Êı¡£
-// ²ÎÊı£ºvalue - ÓûÊä³ö×Ö½Ú£»port - ¶Ë¿Ú¡£
+//// å¸¦å»¶è¿Ÿçš„ç¡¬ä»¶ç«¯å£å­—èŠ‚è¾“å‡ºå‡½æ•°ã€‚
+// å‚æ•°ï¼švalue - æ¬²è¾“å‡ºå­—èŠ‚ï¼›port - ç«¯å£ã€‚
 /*
 #define outb_p(value,port) \
 _asm {\
@@ -55,8 +55,8 @@ _inline void _outb_p(unsigned char value, unsigned short port)
 	_asm l2: 
 }
 
-//// ´øÑÓ³ÙµÄÓ²¼ş¶Ë¿Ú×Ö½ÚÊäÈëº¯Êı¡£
-// ²ÎÊı£ºport - ¶Ë¿Ú¡£·µ»Ø¶ÁÈ¡µÄ×Ö½Ú¡£
+//// å¸¦å»¶è¿Ÿçš„ç¡¬ä»¶ç«¯å£å­—èŠ‚è¾“å…¥å‡½æ•°ã€‚
+// å‚æ•°ï¼šport - ç«¯å£ã€‚è¿”å›è¯»å–çš„å­—èŠ‚ã€‚
 /*
 #define inb_p(port) { \
 volatile unsigned char _v; \

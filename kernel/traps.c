@@ -6,28 +6,28 @@
 #include <set_seg.h>
 
 /*
- * ÔÚ³ÌĞòasm.s ÖĞ±£´æÁËÒ»Ğ©×´Ì¬ºó£¬±¾³ÌĞòÓÃÀ´´¦ÀíÓ²¼şÏİÚåºÍ¹ÊÕÏ¡£Ä¿Ç°Ö÷ÒªÓÃÓÚµ÷ÊÔÄ¿µÄ£¬
- * ÒÔºó½«À©Õ¹ÓÃÀ´É±ËÀÔâËğ»µµÄ½ø³Ì£¨Ö÷ÒªÊÇÍ¨¹ı·¢ËÍÒ»¸öĞÅºÅ£¬µ«Èç¹û±ØÒªÒ²»áÖ±½ÓÉ±ËÀ£©¡£
+ * åœ¨ç¨‹åºasm.s ä¸­ä¿å­˜äº†ä¸€äº›çŠ¶æ€åï¼Œæœ¬ç¨‹åºç”¨æ¥å¤„ç†ç¡¬ä»¶é™·é˜±å’Œæ•…éšœã€‚ç›®å‰ä¸»è¦ç”¨äºè°ƒè¯•ç›®çš„ï¼Œ
+ * ä»¥åå°†æ‰©å±•ç”¨æ¥æ€æ­»é­æŸåçš„è¿›ç¨‹ï¼ˆä¸»è¦æ˜¯é€šè¿‡å‘é€ä¸€ä¸ªä¿¡å·ï¼Œä½†å¦‚æœå¿…è¦ä¹Ÿä¼šç›´æ¥æ€æ­»ï¼‰ã€‚
  */
-// ×Ö·û´®Í·ÎÄ¼ş¡£Ö÷Òª¶¨ÒåÁËÒ»Ğ©ÓĞ¹Ø×Ö·û´®²Ù×÷µÄÇ¶Èëº¯Êı¡£
+// å­—ç¬¦ä¸²å¤´æ–‡ä»¶ã€‚ä¸»è¦å®šä¹‰äº†ä¸€äº›æœ‰å…³å­—ç¬¦ä¸²æ“ä½œçš„åµŒå…¥å‡½æ•°ã€‚
 #include <string.h>
 
-// head Í·ÎÄ¼ş£¬¶¨ÒåÁË¶ÎÃèÊö·ûµÄ¼òµ¥½á¹¹£¬ºÍ¼¸¸öÑ¡Ôñ·û³£Á¿¡£
+// head å¤´æ–‡ä»¶ï¼Œå®šä¹‰äº†æ®µæè¿°ç¬¦çš„ç®€å•ç»“æ„ï¼Œå’Œå‡ ä¸ªé€‰æ‹©ç¬¦å¸¸é‡ã€‚
 #include <linux/head.h>
-// µ÷¶È³ÌĞòÍ·ÎÄ¼ş£¬¶¨ÒåÁËÈÎÎñ½á¹¹task_struct¡¢³õÊ¼ÈÎÎñ0 µÄÊı¾İ£¬
-// »¹ÓĞÒ»Ğ©ÓĞ¹ØÃèÊö·û²ÎÊıÉèÖÃºÍ»ñÈ¡µÄÇ¶ÈëÊ½»ã±àº¯ÊıºêÓï¾ä¡£
+// è°ƒåº¦ç¨‹åºå¤´æ–‡ä»¶ï¼Œå®šä¹‰äº†ä»»åŠ¡ç»“æ„task_structã€åˆå§‹ä»»åŠ¡0 çš„æ•°æ®ï¼Œ
+// è¿˜æœ‰ä¸€äº›æœ‰å…³æè¿°ç¬¦å‚æ•°è®¾ç½®å’Œè·å–çš„åµŒå…¥å¼æ±‡ç¼–å‡½æ•°å®è¯­å¥ã€‚
 #include <linux/sched.h>
-// ÄÚºËÍ·ÎÄ¼ş¡£º¬ÓĞÒ»Ğ©ÄÚºË³£ÓÃº¯ÊıµÄÔ­ĞÎ¶¨Òå¡£
+// å†…æ ¸å¤´æ–‡ä»¶ã€‚å«æœ‰ä¸€äº›å†…æ ¸å¸¸ç”¨å‡½æ•°çš„åŸå½¢å®šä¹‰ã€‚
 #include <linux/kernel.h>
-// ÏµÍ³Í·ÎÄ¼ş¡£¶¨ÒåÁËÉèÖÃ»òĞŞ¸ÄÃèÊö·û/ÖĞ¶ÏÃÅµÈµÄÇ¶ÈëÊ½»ã±àºê¡£
+// ç³»ç»Ÿå¤´æ–‡ä»¶ã€‚å®šä¹‰äº†è®¾ç½®æˆ–ä¿®æ”¹æè¿°ç¬¦/ä¸­æ–­é—¨ç­‰çš„åµŒå…¥å¼æ±‡ç¼–å®ã€‚
 #include <asm/system.h>
-// ¶Î²Ù×÷Í·ÎÄ¼ş¡£¶¨ÒåÁËÓĞ¹Ø¶Î¼Ä´æÆ÷²Ù×÷µÄÇ¶ÈëÊ½»ã±àº¯Êı¡£
+// æ®µæ“ä½œå¤´æ–‡ä»¶ã€‚å®šä¹‰äº†æœ‰å…³æ®µå¯„å­˜å™¨æ“ä½œçš„åµŒå…¥å¼æ±‡ç¼–å‡½æ•°ã€‚
 #include <asm/segment.h>
-// ÊäÈë/Êä³öÍ·ÎÄ¼ş¡£¶¨ÒåÓ²¼ş¶Ë¿ÚÊäÈë/Êä³öºê»ã±àÓï¾ä¡£
+// è¾“å…¥/è¾“å‡ºå¤´æ–‡ä»¶ã€‚å®šä¹‰ç¡¬ä»¶ç«¯å£è¾“å…¥/è¾“å‡ºå®æ±‡ç¼–è¯­å¥ã€‚
 #include <asm/io.h>
 
-// ÒÔÏÂÓï¾ä¶¨ÒåÁËÈı¸öÇ¶ÈëÊ½»ã±àºêÓï¾äº¯Êı¡£ÓĞ¹ØÇ¶ÈëÊ½»ã±àµÄ»ù±¾Óï·¨¼ûÁĞ±íºó»ò²Î¼û¸½Â¼¡£
-// È¡¶Îseg ÖĞµØÖ·addr ´¦µÄÒ»¸ö×Ö½Ú¡£
+// ä»¥ä¸‹è¯­å¥å®šä¹‰äº†ä¸‰ä¸ªåµŒå…¥å¼æ±‡ç¼–å®è¯­å¥å‡½æ•°ã€‚æœ‰å…³åµŒå…¥å¼æ±‡ç¼–çš„åŸºæœ¬è¯­æ³•è§åˆ—è¡¨åæˆ–å‚è§é™„å½•ã€‚
+// å–æ®µseg ä¸­åœ°å€addr å¤„çš„ä¸€ä¸ªå­—èŠ‚ã€‚
 //#define get_seg_byte(seg,addr) ({ \
 //register char __res; \
 //__asm__("push %%fs;mov %%ax,%%fs;movb %%fs:%2,%%al;pop %%fs" \
@@ -48,7 +48,7 @@ _inline char get_seg_byte(unsigned short segm, void *addr)
 	return __res;
 }
 
-// È¡¶Îseg ÖĞµØÖ·addr ´¦µÄÒ»¸ö³¤×Ö£¨4 ×Ö½Ú£©¡£
+// å–æ®µseg ä¸­åœ°å€addr å¤„çš„ä¸€ä¸ªé•¿å­—ï¼ˆ4 å­—èŠ‚ï¼‰ã€‚
 _inline long 
 get_seg_long(unsigned short segm,long *addr) {
 	register unsigned long __res;
@@ -69,7 +69,7 @@ get_seg_long(unsigned short segm,long *addr) {
 //	:"=a" (__res):"0" (seg),"m" (*(addr))); \
 //__res;})
 
-// È¡fs ¶Î¼Ä´æÆ÷µÄÖµ£¨Ñ¡Ôñ·û£©¡£
+// å–fs æ®µå¯„å­˜å™¨çš„å€¼ï¼ˆé€‰æ‹©ç¬¦ï¼‰ã€‚
 _inline unsigned short _fs() {
 	register unsigned short __res;
 	_asm mov ax,fs
@@ -81,35 +81,35 @@ _inline unsigned short _fs() {
 //__asm__("mov %%fs,%%ax":"=a" (__res):); \
 //__res;})
 
-// ÒÔÏÂ¶¨ÒåÁËÒ»Ğ©º¯ÊıÔ­ĞÍ¡£
+// ä»¥ä¸‹å®šä¹‰äº†ä¸€äº›å‡½æ•°åŸå‹ã€‚
 int do_exit(long code);// (kernel/exit.c,102)
 
 void page_exception(void);// [??]
 
-// ÒÔÏÂ¶¨ÒåÁËÒ»Ğ©ÖĞ¶Ï´¦Àí³ÌĞòÔ­ĞÍ£¬´úÂëÔÚ£¨kernel/asm.s »òsystem_call.s£©ÖĞ¡£
-void divide_error(void);// int0 (kernel/asm.s,19)¡£
-void debug(void);// int1 (kernel/asm.s,53)¡£
-void nmi(void);// int2 (kernel/asm.s,57)¡£
-void int3(void);// int3 (kernel/asm.s,61)¡£
-void overflow(void);// int4 (kernel/asm.s,65)¡£
-void bounds(void);// int5 (kernel/asm.s,69)¡£
-void invalid_op(void);// int6 (kernel/asm.s,73)¡£
-void device_not_available(void);// int7 (kernel/system_call.s,148)¡£
-void double_fault(void);// int8 (kernel/asm.s,97)¡£
-void coprocessor_segment_overrun(void);// int9 (kernel/asm.s,77)¡£
-void invalid_TSS(void);// int10 (kernel/asm.s,131)¡£
-void segment_not_present(void);// int11 (kernel/asm.s,135)¡£
-void stack_segment(void);// int12 (kernel/asm.s,139)¡£
-void general_protection(void);// int13 (kernel/asm.s,143)¡£
-void page_fault(void);// int14 (mm/page.s,14)¡£
-void reserved(void);// int15 (kernel/asm.s,81)¡£
-void coprocessor_error(void);// int16 (kernel/system_call.s,131)¡£
-void parallel_interrupt(void);// int39 (kernel/system_call.s,280)¡£
-void irq13(void);// int45 Ğ­´¦ÀíÆ÷ÖĞ¶Ï´¦Àí(kernel/asm.s,85)¡£
+// ä»¥ä¸‹å®šä¹‰äº†ä¸€äº›ä¸­æ–­å¤„ç†ç¨‹åºåŸå‹ï¼Œä»£ç åœ¨ï¼ˆkernel/asm.s æˆ–system_call.sï¼‰ä¸­ã€‚
+void divide_error(void);// int0 (kernel/asm.s,19)ã€‚
+void debug(void);// int1 (kernel/asm.s,53)ã€‚
+void nmi(void);// int2 (kernel/asm.s,57)ã€‚
+void int3(void);// int3 (kernel/asm.s,61)ã€‚
+void overflow(void);// int4 (kernel/asm.s,65)ã€‚
+void bounds(void);// int5 (kernel/asm.s,69)ã€‚
+void invalid_op(void);// int6 (kernel/asm.s,73)ã€‚
+void device_not_available(void);// int7 (kernel/system_call.s,148)ã€‚
+void double_fault(void);// int8 (kernel/asm.s,97)ã€‚
+void coprocessor_segment_overrun(void);// int9 (kernel/asm.s,77)ã€‚
+void invalid_TSS(void);// int10 (kernel/asm.s,131)ã€‚
+void segment_not_present(void);// int11 (kernel/asm.s,135)ã€‚
+void stack_segment(void);// int12 (kernel/asm.s,139)ã€‚
+void general_protection(void);// int13 (kernel/asm.s,143)ã€‚
+void page_fault(void);// int14 (mm/page.s,14)ã€‚
+void reserved(void);// int15 (kernel/asm.s,81)ã€‚
+void coprocessor_error(void);// int16 (kernel/system_call.s,131)ã€‚
+void parallel_interrupt(void);// int39 (kernel/system_call.s,280)ã€‚
+void irq13(void);// int45 åå¤„ç†å™¨ä¸­æ–­å¤„ç†(kernel/asm.s,85)ã€‚
 
-// ¸Ã×Ó³ÌĞòÓÃÀ´´òÓ¡³ö´íÖĞ¶ÏµÄÃû³Æ¡¢³ö´íºÅ¡¢µ÷ÓÃ³ÌĞòµÄEIP¡¢EFLAGS¡¢ESP¡¢fs ¶Î¼Ä´æÆ÷Öµ¡¢
-// ¶ÎµÄ»ùÖ·¡¢¶ÎµÄ³¤¶È¡¢½ø³ÌºÅpid¡¢ÈÎÎñºÅ¡¢10 ×Ö½ÚÖ¸ÁîÂë¡£Èç¹û¶ÑÕ»ÔÚÓÃ»§Êı¾İ¶Î£¬Ôò»¹
-// ´òÓ¡16 ×Ö½ÚµÄ¶ÑÕ»ÄÚÈİ¡£
+// è¯¥å­ç¨‹åºç”¨æ¥æ‰“å°å‡ºé”™ä¸­æ–­çš„åç§°ã€å‡ºé”™å·ã€è°ƒç”¨ç¨‹åºçš„EIPã€EFLAGSã€ESPã€fs æ®µå¯„å­˜å™¨å€¼ã€
+// æ®µçš„åŸºå€ã€æ®µçš„é•¿åº¦ã€è¿›ç¨‹å·pidã€ä»»åŠ¡å·ã€10 å­—èŠ‚æŒ‡ä»¤ç ã€‚å¦‚æœå †æ ˆåœ¨ç”¨æˆ·æ•°æ®æ®µï¼Œåˆ™è¿˜
+// æ‰“å°16 å­—èŠ‚çš„å †æ ˆå†…å®¹ã€‚
 static void die(char * str,long esp_ptr,long nr)
 {
 	long * esp = (long *) esp_ptr;
@@ -134,7 +134,7 @@ static void die(char * str,long esp_ptr,long nr)
 	do_exit(11);		/* play segment exception */
 }
 
-// ÒÔÏÂÕâĞ©ÒÔdo_¿ªÍ·µÄº¯ÊıÊÇ¶ÔÓ¦Ãû³ÆÖĞ¶Ï´¦Àí³ÌĞòµ÷ÓÃµÄC º¯Êı¡£
+// ä»¥ä¸‹è¿™äº›ä»¥do_å¼€å¤´çš„å‡½æ•°æ˜¯å¯¹åº”åç§°ä¸­æ–­å¤„ç†ç¨‹åºè°ƒç”¨çš„C å‡½æ•°ã€‚
 void do_double_fault(long esp, long error_code)
 {
 	die("double fault",esp,error_code);
@@ -232,15 +232,15 @@ void do_reserved(long esp, long error_code)
 	die("reserved (15,17-47) error",esp,error_code);
 }
 
-// ÏÂÃæÊÇÒì³££¨ÏİÚå£©ÖĞ¶Ï³ÌĞò³õÊ¼»¯×Ó³ÌĞò¡£ÉèÖÃËüÃÇµÄÖĞ¶Ïµ÷ÓÃÃÅ£¨ÖĞ¶ÏÏòÁ¿£©¡£
-// set_trap_gate()Óëset_system_gate()µÄÖ÷ÒªÇø±ğÔÚÓÚÇ°ÕßÉèÖÃµÄÌØÈ¨¼¶Îª0£¬ºóÕßÊÇ3¡£Òò´Ë
-// ¶ÏµãÏİÚåÖĞ¶Ïint3¡¢Òç³öÖĞ¶Ïoverflow ºÍ±ß½ç³ö´íÖĞ¶Ïbounds ¿ÉÒÔÓÉÈÎºÎ³ÌĞò²úÉú¡£
-// ÕâÁ½¸öº¯Êı¾ùÊÇÇ¶ÈëÊ½»ã±àºê³ÌĞò(include/asm/system.h,µÚ36 ĞĞ¡¢39 ĞĞ)¡£
+// ä¸‹é¢æ˜¯å¼‚å¸¸ï¼ˆé™·é˜±ï¼‰ä¸­æ–­ç¨‹åºåˆå§‹åŒ–å­ç¨‹åºã€‚è®¾ç½®å®ƒä»¬çš„ä¸­æ–­è°ƒç”¨é—¨ï¼ˆä¸­æ–­å‘é‡ï¼‰ã€‚
+// set_trap_gate()ä¸set_system_gate()çš„ä¸»è¦åŒºåˆ«åœ¨äºå‰è€…è®¾ç½®çš„ç‰¹æƒçº§ä¸º0ï¼Œåè€…æ˜¯3ã€‚å› æ­¤
+// æ–­ç‚¹é™·é˜±ä¸­æ–­int3ã€æº¢å‡ºä¸­æ–­overflow å’Œè¾¹ç•Œå‡ºé”™ä¸­æ–­bounds å¯ä»¥ç”±ä»»ä½•ç¨‹åºäº§ç”Ÿã€‚
+// è¿™ä¸¤ä¸ªå‡½æ•°å‡æ˜¯åµŒå…¥å¼æ±‡ç¼–å®ç¨‹åº(include/asm/system.h,ç¬¬36 è¡Œã€39 è¡Œ)ã€‚
 void trap_init(void)
 {
 	int i;
 
-	set_trap_gate(0,&divide_error);// ÉèÖÃ³ı²Ù×÷³ö´íµÄÖĞ¶ÏÏòÁ¿Öµ¡£ÒÔÏÂÀ×Í¬¡£
+	set_trap_gate(0,&divide_error);// è®¾ç½®é™¤æ“ä½œå‡ºé”™çš„ä¸­æ–­å‘é‡å€¼ã€‚ä»¥ä¸‹é›·åŒã€‚
 	set_trap_gate(1,&debug);
 	set_trap_gate(2,&nmi);
 	set_system_gate(3,&int3);	/* int3-5 can be called from all */
@@ -257,11 +257,11 @@ void trap_init(void)
 	set_trap_gate(14,&page_fault);
 	set_trap_gate(15,&reserved);
 	set_trap_gate(16,&coprocessor_error);
-// ÏÂÃæ½«int17-48 µÄÏİÚåÃÅÏÈ¾ùÉèÖÃÎªreserved£¬ÒÔºóÃ¿¸öÓ²¼ş³õÊ¼»¯Ê±»áÖØĞÂÉèÖÃ×Ô¼ºµÄÏİÚåÃÅ¡£
+// ä¸‹é¢å°†int17-48 çš„é™·é˜±é—¨å…ˆå‡è®¾ç½®ä¸ºreservedï¼Œä»¥åæ¯ä¸ªç¡¬ä»¶åˆå§‹åŒ–æ—¶ä¼šé‡æ–°è®¾ç½®è‡ªå·±çš„é™·é˜±é—¨ã€‚
 	for (i=17;i<48;i++)
 		set_trap_gate(i,&reserved);
-	set_trap_gate(45,&irq13);// ÉèÖÃĞ­´¦ÀíÆ÷µÄÏİÚåÃÅ¡£
-	outb_p(inb_p(0x21)&0xfb,0x21);// ÔÊĞíÖ÷8259A Ğ¾Æ¬µÄIRQ2 ÖĞ¶ÏÇëÇó¡£
-	outb(inb_p(0xA1)&0xdf,0xA1);// ÔÊĞí´Ó8259A Ğ¾Æ¬µÄIRQ13 ÖĞ¶ÏÇëÇó¡£
-	set_trap_gate(39,&parallel_interrupt);// ÉèÖÃ²¢ĞĞ¿ÚµÄÏİÚåÃÅ¡£
+	set_trap_gate(45,&irq13);// è®¾ç½®åå¤„ç†å™¨çš„é™·é˜±é—¨ã€‚
+	outb_p(inb_p(0x21)&0xfb,0x21);// å…è®¸ä¸»8259A èŠ¯ç‰‡çš„IRQ2 ä¸­æ–­è¯·æ±‚ã€‚
+	outb(inb_p(0xA1)&0xdf,0xA1);// å…è®¸ä»8259A èŠ¯ç‰‡çš„IRQ13 ä¸­æ–­è¯·æ±‚ã€‚
+	set_trap_gate(39,&parallel_interrupt);// è®¾ç½®å¹¶è¡Œå£çš„é™·é˜±é—¨ã€‚
 }
