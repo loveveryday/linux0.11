@@ -100,7 +100,7 @@ ok_load_setup:
 ;   如果出错则CF置位，并且ah = 状态码。
 ;   ah = 0, al = 0,         bl = 驱动器类型（AT/PS2）
 ;   ch = 最大磁道号的低8位，cl = 每磁道最大扇区数（位0-5），最大磁道号高2位（位6-7）
-;   dh = 最大磁头数，       dl＝ 驱动器数量，
+;   dh = 最大磁头数，       电力＝ 驱动器数量，
 ;   es:di -> 软驱磁盘参数表。 */
 	mov	dl,00h
 	mov	ax,0800h		;// AH=8 is get drive parameters
